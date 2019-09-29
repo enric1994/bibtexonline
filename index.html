@@ -3,8 +3,31 @@
 
 <body>
 
-    <h2>Test!</h2>
+    <h2>Bibtex to Bibtex!</h2>
+
+    <textarea id="from"
+    onkeyup="convert()" 
+    placeholder="Bibtex here..."
+    ></textarea>
+
+    <textarea id="to"
+    readonly=True
+    ></textarea>
+
+    <script>
+        var x = document.getElementById("from");
+        var y = document.getElementById("to");
+        
+        function convert() {
+            y.value = x.value;
+        }
+    </script>
 
 </body>
 
 </html>
+
+<!--
+    onchange="alert('You just changed the textarea.')" 
+    placeholder="Type in this box. When you click away an alert will be generated."
+-->
