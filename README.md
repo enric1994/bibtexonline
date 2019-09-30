@@ -1,3 +1,3 @@
 ```
-$ python -m http.server 8000
-```s
+$ python3 -m http.server 8000
+```
