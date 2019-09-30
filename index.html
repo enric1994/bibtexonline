@@ -24,6 +24,11 @@
     ></div>
 
     <script>
+
+      // VARIABLES
+
+      var x = document.getElementById("from");
+      var y = document.getElementById("to");
       
       // ON LOAD
 
@@ -36,50 +41,124 @@
 
       window.onload = load;
 
-        var x = document.getElementById("from");
-        var y = document.getElementById("to");
+      // TEST BUTTON
 
-        function test() {
+      function test() {
 
-          x.value = `
-          @inproceedings{azcona2019user2code2vec,
-            author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
-            title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
-            booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
-            series = {LAK19},
-            year = {2019},
-            isbn = {978-1-4503-6256-6},
-            location = {Tempe, AZ, USA},
-            pages = {86--95},
-            numpages = {10},
-            url = {http://doi.acm.org/10.1145/3303772.3303813},
-            doi = {10.1145/3303772.3303813},
-            acmid = {3303813},
-            publisher = {ACM},
-            address = {New York, NY, USA}
+        x.value = `
+        @inproceedings{azcona2019user2code2vec,
+          author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
+          title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
+          booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
+          series = {LAK19},
+          year = {2019},
+          isbn = {978-1-4503-6256-6},
+          location = {Tempe, AZ, USA},
+          pages = {86--95},
+          numpages = {10},
+          url = {http://doi.acm.org/10.1145/3303772.3303813},
+          doi = {10.1145/3303772.3303813},
+          acmid = {3303813},
+          publisher = {ACM},
+          address = {New York, NY, USA}
+        }
+        `;
+
+      }
+
+      // HELPERS
+
+      function authors2html(authorData) {
+            var authorsStr = '';
+            var author;
+            if (!authorData) { return authorsStr ;}
+            for (var index = 0; index < authorData.length; index++) {
+                if (index > 0) { authorsStr += ", "; }
+                author = authorData[index];
+                authorsStr += author.first
+                              + (author.von ? ' ' + author.von + ' ' : ' ')
+                              + author.last;
+            }
+            return htmlify(authorsStr);
           }
-          `;
 
-        }
+    // helper function to "compile" LaTeX special characters to HTML
+    var htmlify = function(str) {
+        if (!str) { return ''; }
+        // TODO: this is probably not a complete list..
+        str = str.replace(/\\"\{a\}/g, '&auml;')
+            .replace(/\{\\aa\}/g, '&aring;')
+            .replace(/\\aa\{\}/g, '&aring;')
+            .replace(/\\"a/g, '&auml;')
+            .replace(/\\"\{o\}/g, '&ouml;')
+            .replace(/\\'e/g, '&eacute;')
+            .replace(/\\'\{e\}/g, '&eacute;')
+            .replace(/\\'a/g, '&aacute;')
+            .replace(/\\'A/g, '&Aacute;')
+            .replace(/\\"o/g, '&ouml;')
+            .replace(/\\"u/g, '&uuml;')
+            .replace(/\\ss\{\}/g, '&szlig;')
+            .replace(/\{/g, '')
+            .replace(/\}/g, '')
+            .replace(/\\&/g, '&')
+            .replace(/--/g, '&ndash;');
+        return str;
+    };
+
+    var uriencode = function(str) {
+        if (!str) { return ''; }
+        // TODO: this is probably not a complete list..
+        str = str.replace(/\\"\{a\}/g, '%C3%A4')
+            .replace(/\{\\aa\}/g, '%C3%A5')
+            .replace(/\\aa\{\}/g, '%C3%A5')
+            .replace(/\\"a/g, '%C3%A4')
+            .replace(/\\"\{o\}/g, '%C3%B6')
+            .replace(/\\'e/g, '%C3%A9')
+            .replace(/\\'\{e\}/g, '%C3%A9')
+            .replace(/\\'a/g, '%C3%A1')
+            .replace(/\\'A/g, '%C3%81')
+            .replace(/\\"o/g, '%C3%B6')
+            .replace(/\\"u/g, '%C3%BC')
+            .replace(/\\ss\{\}/g, '%C3%9F')
+            .replace(/\{/g, '')
+            .replace(/\}/g, '')
+            .replace(/\\&/g, '%26')
+            .replace(/--/g, '%E2%80%93');
+        return str;
+    };
+
+      // CONVERT BUTTON
         
-        function convert() {
+      function convert() {
 
-          var contents = x.value;
+        var contents = x.value;
 
-          bibtex=new BibTex();
-          bibtex.content = contents;
-          bibtex.parse();
+        bibtex=new BibTex();
+        bibtex.content = contents;
+        bibtex.parse();
 
-          // alert(print_r(bibtex.data,true));
-          //for (var i in bibtex.data) {
-          //  alert( bibtex.data[i]['title']+"<br />");
-          //}
-          //alert( bibtex.bibTex());
-          //alert( bibtex.html());
-          //alert( bibtex.rtf());
-          
-          y.innerHTML = bibtex.html();
-        }
+        //alert(print_r(bibtex.data, true));
+
+        console.log(bibtex);
+        //alert( bibtex.bibTex());
+        //alert( bibtex.html());
+        //alert( bibtex.rtf());
+
+        for (var i in bibtex.data) {
+          var entryData = bibtex.data[i];
+
+          var output = authors2html(entryData.author) + " (" + entryData.year + "). " +
+                entryData.title + ". In <em>" + entryData.booktitle +
+                ", pp. " + entryData.pages +
+                ((entryData.address)?", " + entryData.address:"") + ".<\/em>";
+
+          y.innerHTML = output;
+
+          }
+  
+        // y.innerHTML = bibtex.html();
+      }
+
     </script>
 
 </body>
