@@ -12,34 +12,71 @@
     
 </head>
     
+<script src="js/BibTex.js"></script>
     
 <body>
 
-    <h2>Bibtex to Bibtex!</h2>
+    <h2>Bibtex to APA!</h2>
 
-    <textarea id="from"
-    onkeyup="convert()" 
+    <button type="button" onclick="test()">Test BibTex!</button>
+
+    <textarea id="from" style="width: 500px;height: 300px;"
     placeholder="Bibtex here..."
     ></textarea>
+    <!-- onkeyup="convert()"  -->
 
-    <textarea id="to"
-    readonly=True
-    ></textarea>
+    <button type="button" onclick="convert()">Convert!</button>
+
+    <div id="to"
+    ></div>
 
     <script>
         var x = document.getElementById("from");
         var y = document.getElementById("to");
+
+        function test() {
+
+          x.value = `
+          @inproceedings{azcona2019user2code2vec,
+            author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
+            title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
+            booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
+            series = {LAK19},
+            year = {2019},
+            isbn = {978-1-4503-6256-6},
+            location = {Tempe, AZ, USA},
+            pages = {86--95},
+            numpages = {10},
+            url = {http://doi.acm.org/10.1145/3303772.3303813},
+            doi = {10.1145/3303772.3303813},
+            acmid = {3303813},
+            publisher = {ACM},
+            address = {New York, NY, USA}
+          }
+          `;
+
+        }
         
         function convert() {
-            y.value = x.value;
+
+          var contents = x.value;
+
+          bibtex=new BibTex();
+          bibtex.content = contents;
+          bibtex.parse();
+
+          // alert(print_r(bibtex.data,true));
+          //for (var i in bibtex.data) {
+          //  alert( bibtex.data[i]['title']+"<br />");
+          //}
+          //alert( bibtex.bibTex());
+          //alert( bibtex.html());
+          //alert( bibtex.rtf());
+          
+          y.innerHTML = bibtex.html();
         }
     </script>
 
 </body>
 
 </html>
-
-<!--
-    onchange="alert('You just changed the textarea.')" 
-    placeholder="Type in this box. When you click away an alert will be generated."
--->
