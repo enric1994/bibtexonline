@@ -41,23 +41,22 @@
 					<span class="label-input100">Insert BibTeX here:</span>
 					<textarea class="input100" 
 						name="from" 
-						id="from" 
-						placeholder="@inproceedings{bestwebsite2019,
-						title={1001 ways to disable Adblock},
-						author={Moreu, Enric and Azcona, David},
-						booktitle={2019 Top Website},
-						pages={951--958},
-						year={2019},
-						organization={IEEE}
-						}"></textarea>
-						<!-- onkeyup="convert()"  -->
+						id="from"
+						placeholder="@inproceedings{moreu20191001,
+	title={1001 ways to disable Adblock},
+	author={Moreu, Enric and Azcona, David},
+	booktitle={2019 Top Website},
+	pages={951--958},
+	year={2019},
+	organization={IEEE}
+}"></textarea>
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="wrap-input100 input100-select">
 					<span class="label-input100">Format:</span>
 					<div>
-						<select class="selection-2" id="format">
+						<select class="selection-2" id="format" onchange="convert()">
 							<option value="mla">MLA</option>
 							<option value="apa">APA</option>
 							<option value="chicago">Chicago</option>
@@ -76,6 +75,8 @@
 					<span class="focus-input100"></span>
 				</div>
 
+				<button type="button">Copy to clipboard!</button>
+
 			</form>
 
 		</div>
@@ -84,7 +85,6 @@
 
 	<button type="button" onclick="test()">Test BibTex!</button>
 	<button type="button" onclick="test2()">Test Multiple!</button>
-	<button type="button" onclick="convert()">Convert!</button>
 
 	<div id="dropDownSelect1"></div>
 
@@ -110,6 +110,11 @@
   
 		var x = document.getElementById("from");
 		var y = document.getElementById("to");
+		var e = document.getElementById("format");
+
+		$('#from').bind('input propertychange', function() {
+			convert()
+		})
   
 		// TEST BUTTONS
   
@@ -133,6 +138,7 @@
 			address = {New York, NY, USA}
 		  }
 		  `;
+		  convert()
   
 		}
   
@@ -165,6 +171,7 @@
 			school={Dublin City University}
 		  }
 		  `
+		  convert()
   
 		}
   
@@ -258,8 +265,7 @@
 		function format(data) {
   
 		  // var v = document.querySelector('input[name="format"]:checked').value;
-
-		  var e = document.getElementById("format");
+		  
 		  var v = e.options[e.selectedIndex].value;
   
 		  if (data.entryType == "article") {
@@ -358,6 +364,11 @@
 		  y.innerHTML = '';
   
 		  var contents = x.value;
+
+		  if (contents == '') {
+			  console.log('Nothing to call!');
+			  return;
+		  }
   
 		  bibtex=new BibTex();
 		  bibtex.content = contents;
