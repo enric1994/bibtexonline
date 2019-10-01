@@ -81,27 +81,27 @@
 				<div>
 					<span class="label-input100">Result:</span>
 					<div>
-						<textarea class="input100" style="min-height: 7em"
+						<textarea readonly class="input100" style="min-height: 7em"
 						id="to"
 						placeholder="Moreu, E., & Azcona, D. (2019). 1001 ways to disable Adblock. In 2019 Top Website (pp. 951--958)"
 						value=""></textarea>
 					</div>
-					<span class="focus-input100"></span>
-					<div> <!-- class="tooltip" -->
-						<button class="copy-button" onclick="copyFunction()" onmouseout="outFunc()">
-							<!-- <span class="tooltiptext" id="myTooltip">Copy to clipboard</span> -->
-							Copy text!
-						</button>
-					</div>
+					<div class="ctooltip">
+							<button type="button" class="copy-button" onclick="copyFunction()" onmouseout="outFunc()">
+							  <span class="ctooltiptext" id="mycTooltip">Copy to clipboard</span>
+							  Copy text!
+							  </button>
+							</div>
 				</div>
-
+				<p class="footer">Made with ❤️ by <a style="font-weight: bold" href="https://enricmor.eu">Enric </a> and <a style="font-weight: bold" href="https://computing.dcu.ie/~dazcona/">David</a></p>	
 				
-				<p class="footer">Made with ❤️ by <a style="font-weight: bold" href="https://enricmor.eu">Enric </a> and <a style="font-weight: bold" href="https://computing.dcu.ie/~dazcona/">David</a></p>
 			</form>
+			
 
 		</div>
-
 	</div>
+	<p class="footer"><a href="https://bibtex.online">BibTeX Online Converter</a> • <a href="mailto:hi@bibtex.online">Contact</a> • <a href="mailto:feedback@bibtex.online">Feedback</a></p>
+
 
 	<button type="button" onclick="test()">Test BibTex!</button>
 	<button type="button" onclick="test2()">Test Multiple!</button>
@@ -408,26 +408,22 @@
 			}
 		}
 
-		// COPY TEXT
-
+		// Copy text tooltip
 		function copyFunction() {
-			  var copyText = document.getElementById("to");
-			  
-			  console.log(copyText.value);
+			var copyText = document.getElementById("to");
+			copyText.select();
+			copyText.setSelectionRange(0, 99999);
+			document.execCommand("copy");
+			
+			var ctooltip = document.getElementById("mycTooltip");
+			ctooltip.innerHTML = "Copied!";
+			}
 
-  			copyText.select();
-  			copyText.setSelectionRange(0, 99999);
-  			document.execCommand("copy");
-  
-  			// var tooltip = document.getElementById("myTooltip");
-  			// tooltip.innerHTML = "Copied!";
-		}
+			function outFunc() {
+			var ctooltip = document.getElementById("mycTooltip");
+			ctooltip.innerHTML = "Copy to clipboard";
+			}
 
-		function outFunc() {
-			// var tooltip = document.getElementById("myTooltip");
-  			// tooltip.innerHTML = "Copy to clipboard";
-		}
-  
 	  </script>
 
 </body>
