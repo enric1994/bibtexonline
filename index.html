@@ -2,9 +2,25 @@
 <html>
 
 <head>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    
+    // ON LOAD
+
+    function load() {
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-1148226566858552",
+        enable_page_level_ads: true
+      });
+    }
+
+    window.onload = load;  
+
+  </script>
+
 </head>
     
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script src="js/BibTex.js"></script>
 
 <body>
@@ -20,6 +36,15 @@
 
     <button type="button" onclick="convert()">Convert!</button>
 
+    <br>
+
+    <p>Please select your format:</p>
+    <input type="radio" name="format" value="mla"> MLA<br>
+    <input type="radio" name="format" value="apa" checked> APA<br>
+    <input type="radio" name="format" value="chicago"> Chicago<br>
+    <input type="radio" name="format" value="harvard"> Harvard<br>
+    <input type="radio" name="format" value="vancouver"> Vancouver<br>
+
     <div id="to"
     ></div>
 
@@ -29,17 +54,7 @@
 
       var x = document.getElementById("from");
       var y = document.getElementById("to");
-      
-      // ON LOAD
 
-      function load() {
-        (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-1148226566858552",
-          enable_page_level_ads: true
-        });
-      }
-
-      window.onload = load;
 
       // TEST BUTTON
 
@@ -68,68 +83,156 @@
 
       // HELPERS
 
-      function authors2html(authorData) {
-            var authorsStr = '';
-            var author;
-            if (!authorData) { return authorsStr ;}
-            for (var index = 0; index < authorData.length; index++) {
-                if (index > 0) { authorsStr += ", "; }
-                author = authorData[index];
-                authorsStr += author.first
-                              + (author.von ? ' ' + author.von + ' ' : ' ')
-                              + author.last;
+      function get_initials(name) {
+        initials = []
+        words = name.split('-')
+        for (var index = 0; index < words.length; index++) {
+          word = words[index];
+          initial = word[0];
+          initials.push(initial);
+        }
+        return initials
+      }
+      // array.join(separator)
+
+
+      function authors2html(authorData, vformat) {
+        var authorsStr = '';
+        var author;
+        if (!authorData) { return authorsStr ;}
+        for (var index = 0; index < authorData.length; index++) {
+            if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
+            if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
+            if (index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
+              if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
+              else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
             }
-            return htmlify(authorsStr);
+            // Get author
+            author = authorData[index];
+            if (vformat == 'mla' || vformat == 'chicago') {
+              if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
+              else { authorsStr += author.first + ", " + author.last; } // Rest: Piyush Arora
+            }
+            else { 
+              initials = get_initials(author.first)
+              if (vformat == 'vancouver') { separator = ""; } // Azcona, D
+              else { separator = "."; } // Azcona, D.
+              authorsStr += author.last + ", " + initials.join(separator) + separator; 
+            }
+        }
+        return htmlify(authorsStr);
+      }
+
+      // helper function to "compile" LaTeX special characters to HTML
+      var htmlify = function(str) {
+          if (!str) { return ''; }
+          // TODO: this is probably not a complete list..
+          str = str.replace(/\\"\{a\}/g, '&auml;')
+              .replace(/\{\\aa\}/g, '&aring;')
+              .replace(/\\aa\{\}/g, '&aring;')
+              .replace(/\\"a/g, '&auml;')
+              .replace(/\\"\{o\}/g, '&ouml;')
+              .replace(/\\'e/g, '&eacute;')
+              .replace(/\\'\{e\}/g, '&eacute;')
+              .replace(/\\'a/g, '&aacute;')
+              .replace(/\\'A/g, '&Aacute;')
+              .replace(/\\"o/g, '&ouml;')
+              .replace(/\\"u/g, '&uuml;')
+              .replace(/\\ss\{\}/g, '&szlig;')
+              .replace(/\{/g, '')
+              .replace(/\}/g, '')
+              .replace(/\\&/g, '&')
+              .replace(/--/g, '&ndash;');
+          return str;
+      };
+
+      var uriencode = function(str) {
+          if (!str) { return ''; }
+          // TODO: this is probably not a complete list..
+          str = str.replace(/\\"\{a\}/g, '%C3%A4')
+              .replace(/\{\\aa\}/g, '%C3%A5')
+              .replace(/\\aa\{\}/g, '%C3%A5')
+              .replace(/\\"a/g, '%C3%A4')
+              .replace(/\\"\{o\}/g, '%C3%B6')
+              .replace(/\\'e/g, '%C3%A9')
+              .replace(/\\'\{e\}/g, '%C3%A9')
+              .replace(/\\'a/g, '%C3%A1')
+              .replace(/\\'A/g, '%C3%81')
+              .replace(/\\"o/g, '%C3%B6')
+              .replace(/\\"u/g, '%C3%BC')
+              .replace(/\\ss\{\}/g, '%C3%9F')
+              .replace(/\{/g, '')
+              .replace(/\}/g, '')
+              .replace(/\\&/g, '%26')
+              .replace(/--/g, '%E2%80%93');
+          return str;
+      };
+
+      // FORMAT
+
+      function format(data) {
+
+        var v = document.querySelector('input[name="format"]:checked').value;
+
+        if (v == 'mla') {
+
+          return authors2html(data.author, v) + 
+            ". \"" + data.title + ".\" " + 
+            "<em>" + data.booktitle + "<\/em>. " +
+            data.publisher + ", " +
+            data.year + ".";
+
+        }
+        else if (v == 'apa') {
+
+          return authors2html(data.author, v) + 
+            " (" + data.year + "). " +
+            data.title + 
+            ". In <em>" + data.booktitle +
+            "<\/em> (pp. " + data.pages + "). " +
+            data.publisher + ".";
+
+        }
+
+        else if (v == 'chicago') {
+
+          return authors2html(data.author, v) + 
+            ". \"" + data.title + ".\" " + 
+            ". In <em>" + data.booktitle +
+            "<\/em> (pp. " + data.pages + "). " +
+            data.publisher + ", " +
+            data.year + ".";
+
+        }
+
+        else if (v == 'harvard') {
+
+          return authors2html(data.author, v) + 
+            " " + data.year + ". " +
+            data.title + ". " +
+            ". In <em>" + data.booktitle +
+            "<\/em> (pp. " + data.pages + "). " +
+            data.publisher + ", " +
+            data.year + ".";
+        }
+
+        else if (v == 'vancouver') {
+
+          return authors2html(data.author, v) + 
+            data.title + ". " +
+            ". In " + data.booktitle +
+            data.year + " " +
+            " (pp. " + data.pages + "). " +
+            data.publisher + ".";
           }
-
-    // helper function to "compile" LaTeX special characters to HTML
-    var htmlify = function(str) {
-        if (!str) { return ''; }
-        // TODO: this is probably not a complete list..
-        str = str.replace(/\\"\{a\}/g, '&auml;')
-            .replace(/\{\\aa\}/g, '&aring;')
-            .replace(/\\aa\{\}/g, '&aring;')
-            .replace(/\\"a/g, '&auml;')
-            .replace(/\\"\{o\}/g, '&ouml;')
-            .replace(/\\'e/g, '&eacute;')
-            .replace(/\\'\{e\}/g, '&eacute;')
-            .replace(/\\'a/g, '&aacute;')
-            .replace(/\\'A/g, '&Aacute;')
-            .replace(/\\"o/g, '&ouml;')
-            .replace(/\\"u/g, '&uuml;')
-            .replace(/\\ss\{\}/g, '&szlig;')
-            .replace(/\{/g, '')
-            .replace(/\}/g, '')
-            .replace(/\\&/g, '&')
-            .replace(/--/g, '&ndash;');
-        return str;
-    };
-
-    var uriencode = function(str) {
-        if (!str) { return ''; }
-        // TODO: this is probably not a complete list..
-        str = str.replace(/\\"\{a\}/g, '%C3%A4')
-            .replace(/\{\\aa\}/g, '%C3%A5')
-            .replace(/\\aa\{\}/g, '%C3%A5')
-            .replace(/\\"a/g, '%C3%A4')
-            .replace(/\\"\{o\}/g, '%C3%B6')
-            .replace(/\\'e/g, '%C3%A9')
-            .replace(/\\'\{e\}/g, '%C3%A9')
-            .replace(/\\'a/g, '%C3%A1')
-            .replace(/\\'A/g, '%C3%81')
-            .replace(/\\"o/g, '%C3%B6')
-            .replace(/\\"u/g, '%C3%BC')
-            .replace(/\\ss\{\}/g, '%C3%9F')
-            .replace(/\{/g, '')
-            .replace(/\}/g, '')
-            .replace(/\\&/g, '%26')
-            .replace(/--/g, '%E2%80%93');
-        return str;
-    };
+        
+      }
 
       // CONVERT BUTTON
         
       function convert() {
+
+        y.innerHTML = '';
 
         var contents = x.value;
 
@@ -145,14 +248,13 @@
         //alert( bibtex.rtf());
 
         for (var i in bibtex.data) {
+          
           var entryData = bibtex.data[i];
 
-          var output = authors2html(entryData.author) + " (" + entryData.year + "). " +
-                entryData.title + ". In <em>" + entryData.booktitle +
-                ", pp. " + entryData.pages +
-                ((entryData.address)?", " + entryData.address:"") + ".<\/em>";
+          var output = format(entryData);
+          console.log(output);
 
-          y.innerHTML = output;
+          y.innerHTML += output;
 
           }
   
