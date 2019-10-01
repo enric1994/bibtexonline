@@ -105,6 +105,14 @@
           year={2007},
           publisher={Nature Publishing Group}
         }
+
+        @phdthesis{corrigan2018investigation,
+          title={An Investigation Into Machine Learning Solutions Involving Time Series Across Different Problem Domains},
+          author={Corrigan, Owen},
+          year={2018},
+          school={Dublin City University}
+        }
+
         `
 
       }
@@ -252,6 +260,23 @@
           }
           else if (v == 'vancouver') {
             return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
+          }
+        }
+        else if (data.entryType == 'phdthesis') {
+          if (v == 'mla') {
+            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
+          }
+          else if (v == 'apa') {
+            return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+          }
+          else if (v == 'chicago') {
+            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
+          }
+          else if (v == 'harvard') {
+            return authors2html(data.author, v) + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+          }
+          else if (v == 'vancouver') {
+            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
           }
         }
         else {
