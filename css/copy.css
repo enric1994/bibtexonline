@@ -35,3 +35,27 @@
   visibility: visible;
   opacity: 1;
 }
+
+.copy-button {
+  background-color: white;
+  border: 10px;
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-family: Poppins-Regular;
+  font-size: 14px;
+}
+
+.footer {
+  text-align: center;
+  padding-bottom: 1px;
+  font-family: Poppins-Regular;
+  font-size: 14px;
+}
