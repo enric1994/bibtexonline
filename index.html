@@ -28,6 +28,7 @@
     <h2>Bibtex to APA!</h2>
 
     <button type="button" onclick="test()">Test BibTex!</button>
+    <button type="button" onclick="test2()">Test Multiple!</button>
 
     <textarea id="from" style="width: 500px;height: 300px;"
     placeholder="Bibtex here..."
@@ -44,6 +45,8 @@
     <input type="radio" name="format" value="chicago"> Chicago<br>
     <input type="radio" name="format" value="harvard"> Harvard<br>
     <input type="radio" name="format" value="vancouver"> Vancouver<br>
+
+    <br>
 
     <div id="to"
     ></div>
@@ -79,6 +82,10 @@
         }
         `;
 
+      }
+
+      function test2() {
+
         x.value = `
         @book{madigan1997brock,
           title={Brock biology of microorganisms},
@@ -87,9 +94,7 @@
           year={1997},
           publisher={Prentice hall Upper Saddle River, NJ}
         }
-        `;
 
-        x.value = `
         @article{tonouchi2007cutting,
           title={Cutting-edge terahertz technology},
           author={Tonouchi, Masayoshi},
@@ -195,21 +200,21 @@
 
         var v = document.querySelector('input[name="format"]:checked').value;
 
-        if (data.entryType == "inproceedings") {
+        if (data.entryType == "article") {
           if (v == 'mla') {
-            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
+            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ". " + data.number + " (" + data.year + "): " + data.pages + ".";
           }
           else if (v == 'apa') {
-            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
+            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), " + data.pages + ".";
           }
           else if (v == 'chicago') {
-            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ", no. " + data.number + " (" + data.year + "): " + data.pages + ".";
           }
           else if (v == 'harvard') {
-            return authors2html(data.author, v) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+            return authors2html(data.author, v) + " " + data.year + ". " + ". "  + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), p." + data.pages + ".";
           }
           else if (v == 'vancouver') {
-            return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
+            return authors2html(data.author, v) + ". \"" + data.title + "\". " + data.journal + " " + data.year + "; " + data.volume + "(" + data.number + "):" + data.pages + ".";
           }
         }
         else if (data.entryType == "book") {
@@ -229,39 +234,41 @@
             return authors2html(data.author, v) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
           }
         }
-        else if (data.entryType == "article") {
+        else if (data.entryType == "booklet") {
+          return 'booklet...'
+        }
+        else if (data.entryType == "inproceedings") {
           if (v == 'mla') {
-            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ". " + data.number + " (" + data.year + "): " + data.pages + ".";
+            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
           }
           else if (v == 'apa') {
-            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), " + data.pages + ".";
+            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
           }
           else if (v == 'chicago') {
-            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ", no. " + data.number + " (" + data.year + "): " + data.pages + ".";
+            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
           }
           else if (v == 'harvard') {
-            return authors2html(data.author, v) + " " + data.year + ". " + ". "  + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), p." + data.pages + ".";
+            return authors2html(data.author, v) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
           }
           else if (v == 'vancouver') {
-            return authors2html(data.author, v) + ". \"" + data.title + "\". " + data.journal + " " + data.year + "; " + data.volume + "(" + data.number + "):" + data.pages + ".";
+            return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
           }
         }
         else {
           return 'Format ' + data.entryType + ' not supported yet!'
         }
 
-		// 'booklet',
-		// 'conference',
-		// 'inbook',
-		// 'incollection',
-		// 'manual',
-		// 'masterthesis',
-		// 'misc',
-		// 'phdthesis',
-		// 'proceedings',
-		// 'techreport',
-		// 'unpublished'
-
+        // 'booklet',
+        // 'conference',
+        // 'inbook',
+        // 'incollection',
+        // 'manual',
+        // 'masterthesis',
+        // 'misc',
+        // 'phdthesis',
+        // 'proceedings',
+        // 'techreport',
+        // 'unpublished'
         
       }
 
@@ -290,7 +297,7 @@
           var output = format(entryData);
           console.log(output);
 
-          y.innerHTML += output;
+          y.innerHTML += output + "<br><br>";
 
           }
   
