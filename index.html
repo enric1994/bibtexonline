@@ -1,336 +1,389 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    
-    // ON LOAD
-
-    function load() {
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1148226566858552",
-        enable_page_level_ads: true
-      });
-    }
-
-    window.onload = load;  
-
-  </script>
-
+	<title>BibTeX Online Converter</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/whatsapp/224/robot-face_1f916.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css"> -->
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css"> -->
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css"> -->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"> -->
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
 </head>
-    
-<script src="js/BibTex.js"></script>
-
 <body>
 
-    <h2>Bibtex to APA!</h2>
+	<div class="container-contact100">
+		
+		<div class="wrap-contact100">
+			
+			<form class="contact100-form validate-form">
+				
+				<span class="contact100-form-title">
+					BibTeX Online Converter
+				</span>
 
-    <button type="button" onclick="test()">Test BibTex!</button>
-    <button type="button" onclick="test2()">Test Multiple!</button>
+				<div class="wrap-input100 validate-input" data-validate = "Sorry, we can't read your BibTeX!">
+					<span class="label-input100">Insert BibTeX here:</span>
+					<textarea class="input100" 
+						name="from" 
+						id="from" 
+						placeholder="@inproceedings{bestwebsite2019,
+						title={1001 ways to disable Adblock},
+						author={Moreu, Enric and Azcona, David},
+						booktitle={2019 Top Website},
+						pages={951--958},
+						year={2019},
+						organization={IEEE}
+						}"></textarea>
+						<!-- onkeyup="convert()"  -->
+					<span class="focus-input100"></span>
+				</div>
 
-    <textarea id="from" style="width: 500px;height: 300px;"
-    placeholder="Bibtex here..."
-    ></textarea>
-    <!-- onkeyup="convert()"  -->
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">Format:</span>
+					<div>
+						<select class="selection-2" id="format">
+							<option value="mla">MLA</option>
+							<option value="apa">APA</option>
+							<option value="chicago">Chicago</option>
+							<option value="harvard">Harvard</option>
+							<option value="vancouver">Vancouver</option>
+						</select>
+					</div>
+					<span class="focus-input100"></span>
+				</div>
+				
+				<div >
+					<span class="label-input100">Result:</span>
+					<div id="to">
+						Moreu, E., & Azcona, D. (2019). 1001 ways to disable Adblock. In 2019 Top Website (pp. 951--958)
+					</div>
+					<span class="focus-input100"></span>
+				</div>
 
-    <button type="button" onclick="convert()">Convert!</button>
+			</form>
 
-    <br>
+		</div>
 
-    <p>Please select your format:</p>
-    <input type="radio" name="format" value="mla"> MLA<br>
-    <input type="radio" name="format" value="apa" checked> APA<br>
-    <input type="radio" name="format" value="chicago"> Chicago<br>
-    <input type="radio" name="format" value="harvard"> Harvard<br>
-    <input type="radio" name="format" value="vancouver"> Vancouver<br>
+	</div>
 
-    <br>
+	<button type="button" onclick="test()">Test BibTex!</button>
+	<button type="button" onclick="test2()">Test Multiple!</button>
+	<button type="button" onclick="convert()">Convert!</button>
 
-    <div id="to"
-    ></div>
+	<div id="dropDownSelect1"></div>
 
-    <script>
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
 
-      // VARIABLES
+	<script src="js/main.js"></script>
 
-      var x = document.getElementById("from");
-      var y = document.getElementById("to");
+	<script src="js/BibTex.js"></script>
 
+	<script>
 
-      // TEST BUTTON
-
-      function test() {
-
-        x.value = `
-        @inproceedings{azcona2019user2code2vec,
-          author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
-          title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
-          booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
-          series = {LAK19},
-          year = {2019},
-          isbn = {978-1-4503-6256-6},
-          location = {Tempe, AZ, USA},
-          pages = {86--95},
-          numpages = {10},
-          url = {http://doi.acm.org/10.1145/3303772.3303813},
-          doi = {10.1145/3303772.3303813},
-          acmid = {3303813},
-          publisher = {ACM},
-          address = {New York, NY, USA}
-        }
-        `;
-
-      }
-
-      function test2() {
-
-        x.value = `
-        @book{madigan1997brock,
-          title={Brock biology of microorganisms},
-          author={Madigan, Michael T and Martinko, John M and Parker, Jack and others},
-          volume={11},
-          year={1997},
-          publisher={Prentice hall Upper Saddle River, NJ}
-        }
-
-        @article{tonouchi2007cutting,
-          title={Cutting-edge terahertz technology},
-          author={Tonouchi, Masayoshi},
-          journal={Nature photonics},
-          volume={1},
-          number={2},
-          pages={97},
-          year={2007},
-          publisher={Nature Publishing Group}
-        }
-
-        @phdthesis{corrigan2018investigation,
-          title={An Investigation Into Machine Learning Solutions Involving Time Series Across Different Problem Domains},
-          author={Corrigan, Owen},
-          year={2018},
-          school={Dublin City University}
-        }
-
-        `
-
-      }
-
-      // HELPERS
-
-      function get_initials(name) {
-        initials = []
-        words = name.split('-')
-        for (var index = 0; index < words.length; index++) {
-          word = words[index];
-          initial = word[0];
-          initials.push(initial);
-        }
-        return initials
-      }
-
-      function authors2html(authorData, vformat) {
-        var authorsStr = '';
-        var author;
-        if (!authorData) { return authorsStr ;}
-        for (var index = 0; index < authorData.length; index++) {
-            if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
-            if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
-            if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
-              if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
-              else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
-            }
-            // Get author
-            author = authorData[index];
-            if (vformat == 'mla' || vformat == 'chicago') {
-              if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
-              else { authorsStr += author.first + ", " + author.last; } // Rest: Piyush Arora
-            }
-            else { 
-              initials = get_initials(author.first)
-              if (vformat == 'vancouver') { separator = ""; } // Azcona, D
-              else { separator = "."; } // Azcona, D.
-              authorsStr += author.last + ", " + initials.join(separator) + separator; 
-            }
-        }
-        return htmlify(authorsStr);
-      }
-
-      // helper function to "compile" LaTeX special characters to HTML
-      var htmlify = function(str) {
-          if (!str) { return ''; }
-          // TODO: this is probably not a complete list..
-          str = str.replace(/\\"\{a\}/g, '&auml;')
-              .replace(/\{\\aa\}/g, '&aring;')
-              .replace(/\\aa\{\}/g, '&aring;')
-              .replace(/\\"a/g, '&auml;')
-              .replace(/\\"\{o\}/g, '&ouml;')
-              .replace(/\\'e/g, '&eacute;')
-              .replace(/\\'\{e\}/g, '&eacute;')
-              .replace(/\\'a/g, '&aacute;')
-              .replace(/\\'A/g, '&Aacute;')
-              .replace(/\\"o/g, '&ouml;')
-              .replace(/\\"u/g, '&uuml;')
-              .replace(/\\ss\{\}/g, '&szlig;')
-              .replace(/\{/g, '')
-              .replace(/\}/g, '')
-              .replace(/\\&/g, '&')
-              .replace(/--/g, '&ndash;');
-          return str;
-      };
-
-      var uriencode = function(str) {
-          if (!str) { return ''; }
-          // TODO: this is probably not a complete list..
-          str = str.replace(/\\"\{a\}/g, '%C3%A4')
-              .replace(/\{\\aa\}/g, '%C3%A5')
-              .replace(/\\aa\{\}/g, '%C3%A5')
-              .replace(/\\"a/g, '%C3%A4')
-              .replace(/\\"\{o\}/g, '%C3%B6')
-              .replace(/\\'e/g, '%C3%A9')
-              .replace(/\\'\{e\}/g, '%C3%A9')
-              .replace(/\\'a/g, '%C3%A1')
-              .replace(/\\'A/g, '%C3%81')
-              .replace(/\\"o/g, '%C3%B6')
-              .replace(/\\"u/g, '%C3%BC')
-              .replace(/\\ss\{\}/g, '%C3%9F')
-              .replace(/\{/g, '')
-              .replace(/\}/g, '')
-              .replace(/\\&/g, '%26')
-              .replace(/--/g, '%E2%80%93');
-          return str;
-      };
-
-      // FORMAT
-
-      function format(data) {
-
-        var v = document.querySelector('input[name="format"]:checked').value;
-
-        if (data.entryType == "article") {
-          if (v == 'mla') {
-            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ". " + data.number + " (" + data.year + "): " + data.pages + ".";
-          }
-          else if (v == 'apa') {
-            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), " + data.pages + ".";
-          }
-          else if (v == 'chicago') {
-            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ", no. " + data.number + " (" + data.year + "): " + data.pages + ".";
-          }
-          else if (v == 'harvard') {
-            return authors2html(data.author, v) + " " + data.year + ". " + ". "  + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), p." + data.pages + ".";
-          }
-          else if (v == 'vancouver') {
-            return authors2html(data.author, v) + ". \"" + data.title + "\". " + data.journal + " " + data.year + "; " + data.volume + "(" + data.number + "):" + data.pages + ".";
-          }
-        }
-        else if (data.entryType == "book") {
-          if (v == 'mla') {
-            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
-          }
-          else if (v == 'apa') {
-            return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
-          }
-          else if (v == 'chicago') {
-            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
-          }
-          else if (v == 'harvard') {
-            return authors2html(data.author, v) + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
-          }
-          else if (v == 'vancouver') {
-            return authors2html(data.author, v) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
-          }
-        }
-        else if (data.entryType == "booklet") {
-          return 'booklet...'
-        }
-        else if (data.entryType == "inproceedings") {
-          if (v == 'mla') {
-            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
-          }
-          else if (v == 'apa') {
-            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
-          }
-          else if (v == 'chicago') {
-            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
-          }
-          else if (v == 'harvard') {
-            return authors2html(data.author, v) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
-          }
-          else if (v == 'vancouver') {
-            return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
-          }
-        }
-        else if (data.entryType == 'phdthesis') {
-          if (v == 'mla') {
-            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
-          }
-          else if (v == 'apa') {
-            return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
-          }
-          else if (v == 'chicago') {
-            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
-          }
-          else if (v == 'harvard') {
-            return authors2html(data.author, v) + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
-          }
-          else if (v == 'vancouver') {
-            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
-          }
-        }
-        else {
-          return 'Format ' + data.entryType + ' not supported yet!'
-        }
-
-        // 'booklet',
-        // 'conference',
-        // 'inbook',
-        // 'incollection',
-        // 'manual',
-        // 'masterthesis',
-        // 'misc',
-        // 'phdthesis',
-        // 'proceedings',
-        // 'techreport',
-        // 'unpublished'
-        
-      }
-
-      // CONVERT BUTTON
-        
-      function convert() {
-
-        y.innerHTML = '';
-
-        var contents = x.value;
-
-        bibtex=new BibTex();
-        bibtex.content = contents;
-        bibtex.parse();
-
-        console.log(bibtex);
-        //alert(print_r(bibtex.data, true));
-        //alert( bibtex.bibTex());
-        //alert( bibtex.html());
-        //alert( bibtex.rtf());
-
-        for (var i in bibtex.data) {
-          
-          var entryData = bibtex.data[i];
-
-          var output = format(entryData);
-          console.log(output);
-
-          y.innerHTML += output + "<br><br>";
-
-          }
+		// VARIABLES
   
-        // y.innerHTML = bibtex.html();
-      }
+		var x = document.getElementById("from");
+		var y = document.getElementById("to");
+  
+		// TEST BUTTONS
+  
+		function test() {
+  
+		  x.value = `
+		  @inproceedings{azcona2019user2code2vec,
+			author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
+			title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
+			booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
+			series = {LAK19},
+			year = {2019},
+			isbn = {978-1-4503-6256-6},
+			location = {Tempe, AZ, USA},
+			pages = {86--95},
+			numpages = {10},
+			url = {http://doi.acm.org/10.1145/3303772.3303813},
+			doi = {10.1145/3303772.3303813},
+			acmid = {3303813},
+			publisher = {ACM},
+			address = {New York, NY, USA}
+		  }
+		  `;
+  
+		}
+  
+		function test2() {
+  
+		  x.value = `
+		  @book{madigan1997brock,
+			title={Brock biology of microorganisms},
+			author={Madigan, Michael T and Martinko, John M and Parker, Jack and others},
+			volume={11},
+			year={1997},
+			publisher={Prentice hall Upper Saddle River, NJ}
+		  }
+  
+		  @article{tonouchi2007cutting,
+			title={Cutting-edge terahertz technology},
+			author={Tonouchi, Masayoshi},
+			journal={Nature photonics},
+			volume={1},
+			number={2},
+			pages={97},
+			year={2007},
+			publisher={Nature Publishing Group}
+		  }
+  
+		  @phdthesis{corrigan2018investigation,
+			title={An Investigation Into Machine Learning Solutions Involving Time Series Across Different Problem Domains},
+			author={Corrigan, Owen},
+			year={2018},
+			school={Dublin City University}
+		  }
+		  `
+  
+		}
+  
+		// HELPERS
+  
+		function get_initials(name) {
+		  initials = []
+		  words = name.split('-')
+		  for (var index = 0; index < words.length; index++) {
+			word = words[index];
+			initial = word[0];
+			initials.push(initial);
+		  }
+		  return initials
+		}
+  
+		function authors2html(authorData, vformat) {
+		  var authorsStr = '';
+		  var author;
+		  if (!authorData) { return authorsStr ;}
+		  for (var index = 0; index < authorData.length; index++) {
+			  if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
+			  if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
+			  if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
+				if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
+				else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
+			  }
+			  // Get author
+			  author = authorData[index];
+			  if (vformat == 'mla' || vformat == 'chicago') {
+				if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
+				else { authorsStr += author.first + ", " + author.last; } // Rest: Piyush Arora
+			  }
+			  else { 
+				initials = get_initials(author.first)
+				if (vformat == 'vancouver') { separator = ""; } // Azcona, D
+				else { separator = "."; } // Azcona, D.
+				authorsStr += author.last + ", " + initials.join(separator) + separator; 
+			  }
+		  }
+		  return htmlify(authorsStr);
+		}
+  
+		// helper function to "compile" LaTeX special characters to HTML
+		var htmlify = function(str) {
+			if (!str) { return ''; }
+			// TODO: this is probably not a complete list..
+			str = str.replace(/\\"\{a\}/g, '&auml;')
+				.replace(/\{\\aa\}/g, '&aring;')
+				.replace(/\\aa\{\}/g, '&aring;')
+				.replace(/\\"a/g, '&auml;')
+				.replace(/\\"\{o\}/g, '&ouml;')
+				.replace(/\\'e/g, '&eacute;')
+				.replace(/\\'\{e\}/g, '&eacute;')
+				.replace(/\\'a/g, '&aacute;')
+				.replace(/\\'A/g, '&Aacute;')
+				.replace(/\\"o/g, '&ouml;')
+				.replace(/\\"u/g, '&uuml;')
+				.replace(/\\ss\{\}/g, '&szlig;')
+				.replace(/\{/g, '')
+				.replace(/\}/g, '')
+				.replace(/\\&/g, '&')
+				.replace(/--/g, '&ndash;');
+			return str;
+		};
+  
+		var uriencode = function(str) {
+			if (!str) { return ''; }
+			// TODO: this is probably not a complete list..
+			str = str.replace(/\\"\{a\}/g, '%C3%A4')
+				.replace(/\{\\aa\}/g, '%C3%A5')
+				.replace(/\\aa\{\}/g, '%C3%A5')
+				.replace(/\\"a/g, '%C3%A4')
+				.replace(/\\"\{o\}/g, '%C3%B6')
+				.replace(/\\'e/g, '%C3%A9')
+				.replace(/\\'\{e\}/g, '%C3%A9')
+				.replace(/\\'a/g, '%C3%A1')
+				.replace(/\\'A/g, '%C3%81')
+				.replace(/\\"o/g, '%C3%B6')
+				.replace(/\\"u/g, '%C3%BC')
+				.replace(/\\ss\{\}/g, '%C3%9F')
+				.replace(/\{/g, '')
+				.replace(/\}/g, '')
+				.replace(/\\&/g, '%26')
+				.replace(/--/g, '%E2%80%93');
+			return str;
+		};
+  
+		// FORMAT
+  
+		function format(data) {
+  
+		  // var v = document.querySelector('input[name="format"]:checked').value;
 
-    </script>
+		  var e = document.getElementById("format");
+		  var v = e.options[e.selectedIndex].value;
+  
+		  if (data.entryType == "article") {
+			if (v == 'mla') {
+			  return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ". " + data.number + " (" + data.year + "): " + data.pages + ".";
+			}
+			else if (v == 'apa') {
+			  return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), " + data.pages + ".";
+			}
+			else if (v == 'chicago') {
+			  return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ", no. " + data.number + " (" + data.year + "): " + data.pages + ".";
+			}
+			else if (v == 'harvard') {
+			  return authors2html(data.author, v) + " " + data.year + ". " + ". "  + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), p." + data.pages + ".";
+			}
+			else if (v == 'vancouver') {
+			  return authors2html(data.author, v) + ". \"" + data.title + "\". " + data.journal + " " + data.year + "; " + data.volume + "(" + data.number + "):" + data.pages + ".";
+			}
+		  }
+		  else if (data.entryType == "book") {
+			if (v == 'mla') {
+			  return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+			}
+			else if (v == 'apa') {
+			  return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+			}
+			else if (v == 'chicago') {
+			  return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+			}
+			else if (v == 'harvard') {
+			  return authors2html(data.author, v) + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+			}
+			else if (v == 'vancouver') {
+			  return authors2html(data.author, v) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
+			}
+		  }
+		  else if (data.entryType == "booklet") {
+			return 'booklet...'
+		  }
+		  else if (data.entryType == "inproceedings") {
+			if (v == 'mla') {
+			  return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
+			}
+			else if (v == 'apa') {
+			  return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
+			}
+			else if (v == 'chicago') {
+			  return authors2html(data.author, v) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+			}
+			else if (v == 'harvard') {
+			  return authors2html(data.author, v) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+			}
+			else if (v == 'vancouver') {
+			  return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
+			}
+		  }
+		  else if (data.entryType == 'phdthesis') {
+			if (v == 'mla') {
+			  return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
+			}
+			else if (v == 'apa') {
+			  return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+			}
+			else if (v == 'chicago') {
+			  return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
+			}
+			else if (v == 'harvard') {
+			  return authors2html(data.author, v) + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+			}
+			else if (v == 'vancouver') {
+			  return authors2html(data.author, v) + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
+			}
+		  }
+		  else {
+			return 'Format ' + data.entryType + ' not supported yet!'
+		  }
+  
+		  // 'booklet',
+		  // 'conference',
+		  // 'inbook',
+		  // 'incollection',
+		  // 'manual',
+		  // 'masterthesis',
+		  // 'misc',
+		  // 'phdthesis',
+		  // 'proceedings',
+		  // 'techreport',
+		  // 'unpublished'
+		  
+		}
+  
+		// CONVERT BUTTON
+		  
+		function convert() {
+  
+		  y.innerHTML = '';
+  
+		  var contents = x.value;
+  
+		  bibtex=new BibTex();
+		  bibtex.content = contents;
+		  bibtex.parse();
+  
+		  console.log(bibtex);
+		  //alert(print_r(bibtex.data, true));
+		  //alert( bibtex.bibTex());
+		  //alert( bibtex.html());
+		  //alert( bibtex.rtf());
+  
+		  for (var i in bibtex.data) {
+			
+			var entryData = bibtex.data[i];
+  
+			var output = format(entryData);
+			console.log(output);
+  
+			y.innerHTML += output + "<br><br>";
+  
+			}
+	
+		  // y.innerHTML = bibtex.html();
+		}
+  
+	  </script>
 
 </body>
-
 </html>
