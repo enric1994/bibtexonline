@@ -79,6 +79,29 @@
         }
         `;
 
+        x.value = `
+        @book{madigan1997brock,
+          title={Brock biology of microorganisms},
+          author={Madigan, Michael T and Martinko, John M and Parker, Jack and others},
+          volume={11},
+          year={1997},
+          publisher={Prentice hall Upper Saddle River, NJ}
+        }
+        `;
+
+        x.value = `
+        @article{tonouchi2007cutting,
+          title={Cutting-edge terahertz technology},
+          author={Tonouchi, Masayoshi},
+          journal={Nature photonics},
+          volume={1},
+          number={2},
+          pages={97},
+          year={2007},
+          publisher={Nature Publishing Group}
+        }
+        `
+
       }
 
       // HELPERS
@@ -93,8 +116,6 @@
         }
         return initials
       }
-      // array.join(separator)
-
 
       function authors2html(authorData, vformat) {
         var authorsStr = '';
@@ -103,7 +124,7 @@
         for (var index = 0; index < authorData.length; index++) {
             if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
             if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
-            if (index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
+            if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
               if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
               else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
             }
@@ -174,57 +195,73 @@
 
         var v = document.querySelector('input[name="format"]:checked').value;
 
-        if (v == 'mla') {
-
-          return authors2html(data.author, v) + 
-            ". \"" + data.title + ".\" " + 
-            "<em>" + data.booktitle + "<\/em>. " +
-            data.publisher + ", " +
-            data.year + ".";
-
-        }
-        else if (v == 'apa') {
-
-          return authors2html(data.author, v) + 
-            " (" + data.year + "). " +
-            data.title + 
-            ". In <em>" + data.booktitle +
-            "<\/em> (pp. " + data.pages + "). " +
-            data.publisher + ".";
-
-        }
-
-        else if (v == 'chicago') {
-
-          return authors2html(data.author, v) + 
-            ". \"" + data.title + ".\" " + 
-            ". In <em>" + data.booktitle +
-            "<\/em> (pp. " + data.pages + "). " +
-            data.publisher + ", " +
-            data.year + ".";
-
-        }
-
-        else if (v == 'harvard') {
-
-          return authors2html(data.author, v) + 
-            " " + data.year + ". " +
-            data.title + ". " +
-            ". In <em>" + data.booktitle +
-            "<\/em> (pp. " + data.pages + "). " +
-            data.publisher + ", " +
-            data.year + ".";
-        }
-
-        else if (v == 'vancouver') {
-
-          return authors2html(data.author, v) + 
-            data.title + ". " +
-            ". In " + data.booktitle +
-            data.year + " " +
-            " (pp. " + data.pages + "). " +
-            data.publisher + ".";
+        if (data.entryType == "inproceedings") {
+          if (v == 'mla') {
+            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
           }
+          else if (v == 'apa') {
+            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
+          }
+          else if (v == 'chicago') {
+            return authors2html(data.author, v) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+          }
+          else if (v == 'harvard') {
+            return authors2html(data.author, v) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+          }
+          else if (v == 'vancouver') {
+            return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
+          }
+        }
+        else if (data.entryType == "book") {
+          if (v == 'mla') {
+            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+          }
+          else if (v == 'apa') {
+            return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+          }
+          else if (v == 'chicago') {
+            return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+          }
+          else if (v == 'harvard') {
+            return authors2html(data.author, v) + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+          }
+          else if (v == 'vancouver') {
+            return authors2html(data.author, v) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
+          }
+        }
+        else if (data.entryType == "article") {
+          if (v == 'mla') {
+            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ". " + data.number + " (" + data.year + "): " + data.pages + ".";
+          }
+          else if (v == 'apa') {
+            return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), " + data.pages + ".";
+          }
+          else if (v == 'chicago') {
+            return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ", no. " + data.number + " (" + data.year + "): " + data.pages + ".";
+          }
+          else if (v == 'harvard') {
+            return authors2html(data.author, v) + " " + data.year + ". " + ". "  + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), p." + data.pages + ".";
+          }
+          else if (v == 'vancouver') {
+            return authors2html(data.author, v) + ". \"" + data.title + "\". " + data.journal + " " + data.year + "; " + data.volume + "(" + data.number + "):" + data.pages + ".";
+          }
+        }
+        else {
+          return 'Format ' + data.entryType + ' not supported yet!'
+        }
+
+		// 'booklet',
+		// 'conference',
+		// 'inbook',
+		// 'incollection',
+		// 'manual',
+		// 'masterthesis',
+		// 'misc',
+		// 'phdthesis',
+		// 'proceedings',
+		// 'techreport',
+		// 'unpublished'
+
         
       }
 
@@ -240,9 +277,8 @@
         bibtex.content = contents;
         bibtex.parse();
 
-        //alert(print_r(bibtex.data, true));
-
         console.log(bibtex);
+        //alert(print_r(bibtex.data, true));
         //alert( bibtex.bibTex());
         //alert( bibtex.html());
         //alert( bibtex.rtf());

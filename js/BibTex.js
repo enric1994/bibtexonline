@@ -865,7 +865,7 @@ function BibTex(options)
 		'article',
 		'book',
 		'booklet',
-		'confernce',
+		'conference',
 		'inbook',
 		'incollection',
 		'inproceedings',
