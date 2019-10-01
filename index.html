@@ -24,6 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/copy.css">
 </head>
 <body>
 
@@ -67,15 +68,24 @@
 					<span class="focus-input100"></span>
 				</div>
 				
-				<div >
+				<div>
 					<span class="label-input100">Result:</span>
-					<div id="to">
-						Moreu, E., & Azcona, D. (2019). 1001 ways to disable Adblock. In 2019 Top Website (pp. 951--958)
+					<div>
+						<textarea
+						id="to"
+						placeholder="Moreu, E., & Azcona, D. (2019). 1001 ways to disable Adblock. In 2019 Top Website (pp. 951--958)"
+						value=""></textarea>
 					</div>
 					<span class="focus-input100"></span>
+					<div> <!-- class="tooltip" -->
+						<button onclick="copyFunction()" onmouseout="outFunc()">
+							<!-- <span class="tooltiptext" id="myTooltip">Copy to clipboard</span> -->
+							Copy text
+						</button>
+					</div>
 				</div>
 
-				<button type="button">Copy to clipboard!</button>
+				
 
 			</form>
 
@@ -136,8 +146,8 @@
 	publisher = {ACM},
 	address = {New York, NY, USA}
 }`;
-		  convert()
-  
+		  convert();
+
 		}
   
 		function test2() {
@@ -167,7 +177,7 @@
 	year={2018},
 	school={Dublin City University}
 }`
-		  convert()
+		  convert();
   
 		}
   
@@ -357,7 +367,7 @@
 		  
 		function convert() {
   
-		  y.innerHTML = '';
+		  y.value = '';
   
 		  var contents = x.value;
 
@@ -383,11 +393,29 @@
 			var output = format(entryData);
 			console.log(output);
   
-			y.innerHTML += output + "<br><br>";
+			y.value += output + "<br><br>";
   
 			}
-	
-		  // y.innerHTML = bibtex.html();
+		}
+
+		// COPY TEXT
+
+		function copyFunction() {
+			  var copyText = document.getElementById("to");
+			  
+			  console.log(copyText.value);
+
+  			copyText.select();
+  			copyText.setSelectionRange(0, 99999);
+  			document.execCommand("copy");
+  
+  			// var tooltip = document.getElementById("myTooltip");
+  			// tooltip.innerHTML = "Copied!";
+		}
+
+		function outFunc() {
+			// var tooltip = document.getElementById("myTooltip");
+  			// tooltip.innerHTML = "Copy to clipboard";
 		}
   
 	  </script>
