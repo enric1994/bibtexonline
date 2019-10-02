@@ -60,3 +60,10 @@
   font-family: Poppins-Regular;
   font-size: 14px;
 }
+
+.description {
+  text-align: center;
+  margin-bottom: 30px;
+  font-family: Poppins-Regular;
+  font-size: 18px;
+}
