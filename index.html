@@ -298,26 +298,34 @@
 			var formatValue = formatDropdown.options[formatDropdown.selectedIndex].value;
 
 			// Format authors
-			var authors = authors2html(data.author, formatValue)
+			var authors = authors2html(data.author, formatValue);
+			authors = ((authors) ? authors : "Authors are required!");
 
+			// http://bib-it.sourceforge.net/help/fieldsAndEntryTypes.php#article
 			// ARTICLE
+			// An article from a journal or magazine.
+			// Required fields: author, title, journal, year.
+			// Optional fields: volume, number, pages, month, note.
 			if (data.entryType == "article") {
+				var title = ((data.title) ? data.title : "Title is required!");
+				var journal = ((data.journal) ? data.journal : "Journal is required!")
+				var year = ((data.year) ? data.year : "Year is required!")
 				if (formatValue == 'mla') {
-					return ((authors) ? authors : "Authors are required!") +
-						". \"" + ((data.title) ? data.title : "Title is required!") + "\". " +
-						"<em>" + ((data.journal) ? data.journal : "Journal is required!") + "<\/em>" +
+					return authors +
+						". \"" + title + "\". " +
+						"<em>" + journal + "<\/em>" +
 						((data.volume) ? " " + data.volume : "") +
 						". " +
 						((data.number) ? " " + data.number : "") + 
-						"(" + ((data.year) ? data.year : "Year is required!") + ")" +
+						"(" + year + ")" +
 						((data.pages) ? ": " + data.pages : "") +
 						".";
 				}
 				else if (formatValue == 'apa') {
-					return ((authors) ? authors : "Authors are required!") +
-						" (" + ((data.year) ? data.year : "Year is required!") + "). " + 
-						((data.title) ? data.title : "Title is required!") + 
-						"<em>" + ((data.journal) ? data.journal : "Journal is required!") + 
+					return authors +
+						" (" + year + "). " + 
+						title + 
+						"<em>" + journal + 
 						((data.volume) ? ", " + data.volume : "") +
 						"<\/em>" +
 						((data.number) ? "(" + data.number + ")" : "") + 
@@ -325,20 +333,20 @@
 						".";
 				}
 				else if (formatValue == 'chicago') {
-					return ((authors) ? authors : "Authors are required!") +
-						". \"" + ((data.title) ? data.title : "Title is required!") + "\"." + 
-						"<em>" + ((data.journal) ? data.journal : "Journal is required!") + "<\/em>" + 
+					return authors +
+						". \"" + title + "\"." + 
+						"<em>" + journal + "<\/em>" + 
 						((data.volume) ? " " + data.volume : "") +
 						((data.number) ? ", no." + data.number : "") + 
-						" (" + ((data.year) ? data.year : "Year is required!") + ")" + 
+						" (" + year + ")" + 
 						((data.pages) ? ": " + data.pages : "") +
 						".";
 				}
 				else if (formatValue == 'harvard') {
-					return ((authors) ? authors : "Authors are required!") +
-						" " + ((data.year) ? data.year : "Year is required!") + 
-						". " + ((data.title) ? data.title : "Title is required!") + 
-						". <em>" + ((data.journal) ? data.journal : "Journal is required!") + 
+					return authors +
+						" " + year + 
+						". " + title + 
+						". <em>" + journal + 
 						((data.volume) ? ", " + data.volume : "") +
 						"<\/em>" + 
 						((data.number) ? "(" + data.number + ")" : "") + 
@@ -346,65 +354,103 @@
 						".";
 				}
 				else if (formatValue == 'vancouver') {
-					return authors2html(data.author, formatValue) + ". \"" +
-						((data.title) ? data.title : "Title is required!") + "\". " +
-						((data.journal) ? data.journal : "Journal is required!") + " " +
-						((data.year) ? data.year : "Year is required!") +
+					return authors +
+						". \"" + title + "\". " +
+						journal + " " +
+						year +
 						((data.volume) ? "; " + data.volume : "") +
 						((data.number) ? "(" + data.number + ")" : "") +
 						((data.pages) ? ":" + data.pages : "") + 
 						".";
 				}
 			}
+			// IN PROCEEDINGS
+			// An article in a conference proceedings.
+			// Required fields: author, title, booktitle, year.
+			// Optional fields: editor, volume or number, series, pages, address, month, organization, publisher, note.
+			else if (data.entryType == "inproceedings") {
+				var title = ((data.title) ? data.title : "Title is required!");
+				var booktitle = ((data.booktitle) ? data.booktitle : "Book title is required!");
+				var year = ((data.year) ? data.year : "Year is required!");
+				if (formatValue == 'mla') {
+					return authors +
+						". \"" + title + ".\" " + 
+						"<em>" + booktitle + "<\/em>. " + 
+						((data.publisher) ? data.publisher + ", " : "")
+						year + 
+						".";
+				}
+				else if (formatValue == 'apa') {
+					return authors + 
+						" (" + year + "). " + 
+						title + 
+						". In <em>" + booktitle + "<\/em>" + 
+						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+						"." +
+						((data.publisher) ? " " + data.publisher + "." : "");
+				}
+				else if (formatValue == 'chicago') {
+					return authors + 
+						". \"" + title + ".\" " + 
+						". In <em>" + booktitle + "<\/em>" +
+						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+						"." +
+						((data.publisher) ? " " + data.publisher + ", ": "") +
+						year + ".";
+				}
+				else if (formatValue == 'harvard') {
+					return authors + 
+						" " + year + 
+						". " + title + 
+						". In <em>" + data.booktitle + "<\/em>" +
+						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+						"." +
+						((data.publisher) ? " " + data.publisher + ".": "");
+				}
+				else if (formatValue == 'vancouver') {
+					return authors + 
+						title + 
+						". In " + booktitle + " "
+						data.year + " " + 
+						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+						"." +
+						((data.publisher) ? " " + data.publisher + ".": "");
+				}
+			}
+			// BOOK
 			else if (data.entryType == "book") {
 				if (formatValue == 'mla') {
-					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+					return authors + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
 				}
 				else if (formatValue == 'apa') {
-					return authors2html(data.author, formatValue) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+					return authors + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
 				}
 				else if (formatValue == 'chicago') {
-					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+					return authors + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
 				}
 				else if (formatValue == 'harvard') {
-					return authors2html(data.author, formatValue) + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+					return authors + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
 				}
 				else if (formatValue == 'vancouver') {
-					return authors2html(data.author, formatValue) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
+					return authors + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
 				}
 			}
-			else if (data.entryType == "inproceedings") {
-				if (formatValue == 'mla') {
-					return authors2html(data.author, formatValue) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
-				}
-				else if (formatValue == 'apa') {
-					return authors2html(data.author, formatValue) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
-				}
-				else if (formatValue == 'chicago') {
-					return authors2html(data.author, formatValue) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
-				}
-				else if (formatValue == 'harvard') {
-					return authors2html(data.author, formatValue) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
-				}
-				else if (formatValue == 'vancouver') {
-					return authors2html(data.author, formatValue) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
-				}
-			}
+			// PHD THESIS
 			else if (data.entryType == 'phdthesis') {
 				if (formatValue == 'mla') {
-					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
+					return authors + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
 				}
 				else if (formatValue == 'apa') {
-					return authors2html(data.author, formatValue) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+					return authors + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
 				}
 				else if (formatValue == 'chicago') {
-					return authors2html(data.author, formatValue) + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
+					return authors + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
 				}
 				else if (formatValue == 'harvard') {
-					return authors2html(data.author, formatValue) + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+					return authors + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
 				}
 				else if (formatValue == 'vancouver') {
-					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
+					return authors + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
 				}
 			}
 			else {
