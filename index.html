@@ -436,39 +436,46 @@
 				}
 			}
 			// PHD THESIS
+			// A Ph.D. thesis.
+			// Required fields: author, title, school, year.
+			// Optional fields: type, address, month, note.
 			else if (data.entryType == 'phdthesis') {
+				var title = ((data.title) ? data.title : "Title is required!");
+				var school = ((data.school) ? data.school : "School is required!");
+				var year = ((data.year) ? data.year : "Year is required!");
 				if (formatValue == 'mla') {
-					return authors + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
+					return authors + 
+						". <em>" + title + "<\/em>" +
+						". Diss." + school + 
+						", " + year + ".";
 				}
 				else if (formatValue == 'apa') {
-					return authors + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+					return authors + 
+						" (" + year + "). " + 
+						"<em>" + title + "<\/em>." +
+						" (Doctoral dissertation, " + school + ").";
 				}
 				else if (formatValue == 'chicago') {
-					return authors + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
+					return authors + 
+						". \"" + title + ".\" " + 
+						"PhD diss., " + school + ", " + 
+						year + ". ";
 				}
 				else if (formatValue == 'harvard') {
-					return authors + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+					return authors + 
+						", " + year + 
+						". <em>" + title + "<\/em>." + 
+						" (Doctoral dissertation, " + school + ").";
 				}
 				else if (formatValue == 'vancouver') {
-					return authors + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
+					return authors + 
+						". <em>" + title + "<\/em>" + 
+						" (Doctoral dissertation, " + school + ").";
 				}
 			}
 			else {
 				return 'Format ' + data.entryType + ' not supported yet!'
 			}
-
-			// 'booklet',
-			// 'conference',
-			// 'inbook',
-			// 'incollection',
-			// 'manual',
-			// 'masterthesis',
-			// 'misc',
-			// 'phdthesis',
-			// 'proceedings',
-			// 'techreport',
-			// 'unpublished'
-
 		}
 
 		// Function called to convert BibTeX to other format
