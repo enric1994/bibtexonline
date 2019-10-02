@@ -90,11 +90,14 @@
 
 				<div>
 					<span class="label-input100">Result:</span>
+					<div id="todiv"></div>
+					<!--
 					<div>
 						<textarea readonly class="input100" style="min-height: 7em" id="to"
 							placeholder="Moreu, E., & Azcona, D. (2019). 1001 ways to disable Adblock. In 2019 Top Website (pp. 951--958)"
 							value=""></textarea>
 					</div>
+					-->
 					<div class="ctooltip">
 						<button type="button" class="copy-button" onclick="copyFunction()" onmouseout="outFunc()">
 							<span class="ctooltiptext" id="mycTooltip">Copy to clipboard</span>
@@ -141,7 +144,8 @@
 		// VARIABLES
 
 		var fromArea = document.getElementById("from");
-		var toInput = document.getElementById("to");
+		// var toInput = document.getElementById("to");
+		var toDiv = document.getElementById("todiv");
 		var formatDropdown = document.getElementById("format");
 		var ctooltip = document.getElementById("mycTooltip");
 
@@ -418,9 +422,23 @@
 				}
 			}
 			// BOOK
+			// A book with an explicit publisher.
+			// Required fields: author or editor, title, publisher, year.
+			// Optional fields: volume or number, series, address, edition, month, note.
 			else if (data.entryType == "book") {
+				var title = ((data.title) ? data.title : "Title is required!");
+				var publisher = ((data.publisher) ? data.publisher : "Publisher is required!");
+				var year = ((data.year) ? data.year : "Year is required!");
+				if (authors == "Authors are required!") { 
+					authors = ((data.editor) ? data.editor : "Author or Editor is required!");
+				}
 				if (formatValue == 'mla') {
-					return authors + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+					return authors + 
+						". <em>" + title + "<\/em>." + 
+						((data.volume) ? " Vol. " + data.volume : "") +  
+						". " + 
+						publisher + ", " + 
+						year + ".";
 				}
 				else if (formatValue == 'apa') {
 					return authors + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
@@ -482,7 +500,8 @@
 		function convert() {
 
 			// Reset output
-			toInput.value = '';
+			// toInput.value = '';
+			toDiv.innerHTML = '';
 
 			// Contents to format
 			var contents = fromArea.value;
@@ -509,15 +528,32 @@
 				var output = format(citation);
 				
 				// Show
-				toInput.value += htmlify(output) + "\n\n";
+				// toInput.value += htmlify(output) + "\n\n";
+				toDiv.innerHTML += htmlify(output) + "<br><br>";
 			}
 		}
 
 		// Copy text & tooltip!
 		function copyFunction() {
-			toInput.select(); // Select text
-			toInput.setSelectionRange(0, 99999); // for mobile devices
+			
+			//toInput.select(); // Select text
+			//toInput.setSelectionRange(0, 99999); // for mobile devices
+			//document.execCommand("copy"); // Copy!
+			
+			if (document.selection)
+			{
+				var div = document.body.createTextRange();
+				div.moveToElementText(document.getElementById("divid"));
+				div.select();
+			}
+			else {
+				var div = document.createRange();
+				div.setStartBefore(toDiv);
+				div.setEndAfter(toDiv) ;
+				window.getSelection().addRange(div);
+			}
 			document.execCommand("copy"); // Copy!
+
 			ctooltip.innerHTML = "Copied!"; // Tooltip!
 		}
 
