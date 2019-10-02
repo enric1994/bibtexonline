@@ -133,15 +133,19 @@
 
 	<script src="js/main.js"></script>
 
+	<!-- BibTeX Javascript Parser -->
 	<script src="js/BibTex.js"></script>
 
 	<script>
 
 		// VARIABLES
 
-		var x = document.getElementById("from");
-		var y = document.getElementById("to");
-		var e = document.getElementById("format");
+		var fromArea = document.getElementById("from");
+		var toInput = document.getElementById("to");
+		var formatDropdown = document.getElementById("format");
+		var ctooltip = document.getElementById("mycTooltip");
+
+		// JQUERY: If contents change, call convert function!
 
 		$('#from').bind('input propertychange', function () {
 			convert()
@@ -151,7 +155,7 @@
 
 		function test() {
 
-			x.value = `@inproceedings{azcona2019user2code2vec,
+			fromArea.value = `@inproceedings{azcona2019user2code2vec,
 	author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
 	title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
 	booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
@@ -173,7 +177,7 @@
 
 		function test2() {
 
-			x.value = `@book{madigan1997brock,
+			fromArea.value = `@book{madigan1997brock,
 	title={Brock biology of microorganisms},
 	author={Madigan, Michael T and Martinko, John M and Parker, Jack and others},
 	volume={11},
@@ -204,6 +208,50 @@
 
 		// HELPERS
 
+		// Function to compile LaTeX special characters to HTML
+		var htmlify = function (str) {
+			if (!str) { return ''; }
+			str = str.replace(/\\"\{a\}/g, '&auml;')
+				.replace(/\{\\aa\}/g, '&aring;')
+				.replace(/\\aa\{\}/g, '&aring;')
+				.replace(/\\"a/g, '&auml;')
+				.replace(/\\"\{o\}/g, '&ouml;')
+				.replace(/\\'e/g, '&eacute;')
+				.replace(/\\'\{e\}/g, '&eacute;')
+				.replace(/\\'a/g, '&aacute;')
+				.replace(/\\'A/g, '&Aacute;')
+				.replace(/\\"o/g, '&ouml;')
+				.replace(/\\"u/g, '&uuml;')
+				.replace(/\\ss\{\}/g, '&szlig;')
+				.replace(/\{/g, '')
+				.replace(/\}/g, '')
+				.replace(/\\&/g, '&')
+				.replace(/--/g, '&ndash;');
+			return str;
+		};
+
+		var uriencode = function (str) {
+			if (!str) { return ''; }
+			str = str.replace(/\\"\{a\}/g, '%C3%A4')
+				.replace(/\{\\aa\}/g, '%C3%A5')
+				.replace(/\\aa\{\}/g, '%C3%A5')
+				.replace(/\\"a/g, '%C3%A4')
+				.replace(/\\"\{o\}/g, '%C3%B6')
+				.replace(/\\'e/g, '%C3%A9')
+				.replace(/\\'\{e\}/g, '%C3%A9')
+				.replace(/\\'a/g, '%C3%A1')
+				.replace(/\\'A/g, '%C3%81')
+				.replace(/\\"o/g, '%C3%B6')
+				.replace(/\\"u/g, '%C3%BC')
+				.replace(/\\ss\{\}/g, '%C3%9F')
+				.replace(/\{/g, '')
+				.replace(/\}/g, '')
+				.replace(/\\&/g, '%26')
+				.replace(/--/g, '%E2%80%93');
+			return str;
+		};
+
+		// Function to get initials from authors
 		function get_initials(name) {
 			initials = []
 			words = name.split('-')
@@ -215,6 +263,7 @@
 			return initials
 		}
 
+		// Function to get authors in a particular format from citations
 		function authors2html(authorData, vformat) {
 			var authorsStr = '';
 			var author;
@@ -242,128 +291,120 @@
 			return htmlify(authorsStr);
 		}
 
-		// helper function to "compile" LaTeX special characters to HTML
-		var htmlify = function (str) {
-			if (!str) { return ''; }
-			// TODO: this is probably not a complete list..
-			str = str.replace(/\\"\{a\}/g, '&auml;')
-				.replace(/\{\\aa\}/g, '&aring;')
-				.replace(/\\aa\{\}/g, '&aring;')
-				.replace(/\\"a/g, '&auml;')
-				.replace(/\\"\{o\}/g, '&ouml;')
-				.replace(/\\'e/g, '&eacute;')
-				.replace(/\\'\{e\}/g, '&eacute;')
-				.replace(/\\'a/g, '&aacute;')
-				.replace(/\\'A/g, '&Aacute;')
-				.replace(/\\"o/g, '&ouml;')
-				.replace(/\\"u/g, '&uuml;')
-				.replace(/\\ss\{\}/g, '&szlig;')
-				.replace(/\{/g, '')
-				.replace(/\}/g, '')
-				.replace(/\\&/g, '&')
-				.replace(/--/g, '&ndash;');
-			return str;
-		};
-
-		var uriencode = function (str) {
-			if (!str) { return ''; }
-			// TODO: this is probably not a complete list..
-			str = str.replace(/\\"\{a\}/g, '%C3%A4')
-				.replace(/\{\\aa\}/g, '%C3%A5')
-				.replace(/\\aa\{\}/g, '%C3%A5')
-				.replace(/\\"a/g, '%C3%A4')
-				.replace(/\\"\{o\}/g, '%C3%B6')
-				.replace(/\\'e/g, '%C3%A9')
-				.replace(/\\'\{e\}/g, '%C3%A9')
-				.replace(/\\'a/g, '%C3%A1')
-				.replace(/\\'A/g, '%C3%81')
-				.replace(/\\"o/g, '%C3%B6')
-				.replace(/\\"u/g, '%C3%BC')
-				.replace(/\\ss\{\}/g, '%C3%9F')
-				.replace(/\{/g, '')
-				.replace(/\}/g, '')
-				.replace(/\\&/g, '%26')
-				.replace(/--/g, '%E2%80%93');
-			return str;
-		};
-
-		// FORMAT
-
+		// Function to format the citation based on the format selected
 		function format(data) {
 
-			// var v = document.querySelector('input[name="format"]:checked').value;
+			// Format value: MLA, APA, Chicago, Harvard, Vancouver
+			var formatValue = formatDropdown.options[formatDropdown.selectedIndex].value;
 
-			var v = e.options[e.selectedIndex].value;
+			// Format authors
+			var authors = authors2html(data.author, formatValue)
 
+			// ARTICLE
 			if (data.entryType == "article") {
-				if (v == 'mla') {
-					return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ". " + data.number + " (" + data.year + "): " + data.pages + ".";
+				if (formatValue == 'mla') {
+					return ((authors) ? authors : "Authors are required!") +
+						". \"" + ((data.title) ? data.title : "Title is required!") + "\". " +
+						"<em>" + ((data.journal) ? data.journal : "Journal is required!") + "<\/em>" +
+						((data.volume) ? " " + data.volume : "") +
+						". " +
+						((data.number) ? " " + data.number : "") + 
+						"(" + ((data.year) ? data.year : "Year is required!") + ")" +
+						((data.pages) ? ": " + data.pages : "") +
+						".";
 				}
-				else if (v == 'apa') {
-					return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), " + data.pages + ".";
+				else if (formatValue == 'apa') {
+					return ((authors) ? authors : "Authors are required!") +
+						" (" + ((data.year) ? data.year : "Year is required!") + "). " + 
+						((data.title) ? data.title : "Title is required!") + 
+						"<em>" + ((data.journal) ? data.journal : "Journal is required!") + 
+						((data.volume) ? ", " + data.volume : "") +
+						"<\/em>" +
+						((data.number) ? "(" + data.number + ")" : "") + 
+						((data.pages) ? ", " + data.pages : "") +
+						".";
 				}
-				else if (v == 'chicago') {
-					return authors2html(data.author, v) + ". \"" + data.title + "\". <em>" + data.journal + "<\/em> " + data.volume + ", no. " + data.number + " (" + data.year + "): " + data.pages + ".";
+				else if (formatValue == 'chicago') {
+					return ((authors) ? authors : "Authors are required!") +
+						". \"" + ((data.title) ? data.title : "Title is required!") + "\"." + 
+						"<em>" + ((data.journal) ? data.journal : "Journal is required!") + "<\/em>" + 
+						((data.volume) ? " " + data.volume : "") +
+						((data.number) ? ", no." + data.number : "") + 
+						" (" + ((data.year) ? data.year : "Year is required!") + ")" + 
+						((data.pages) ? ": " + data.pages : "") +
+						".";
 				}
-				else if (v == 'harvard') {
-					return authors2html(data.author, v) + " " + data.year + ". " + ". " + data.title + ". <em>" + data.journal + ", " + data.volume + "<\/em>(" + data.number + "), p." + data.pages + ".";
+				else if (formatValue == 'harvard') {
+					return ((authors) ? authors : "Authors are required!") +
+						" " + ((data.year) ? data.year : "Year is required!") + 
+						". " + ((data.title) ? data.title : "Title is required!") + 
+						". <em>" + ((data.journal) ? data.journal : "Journal is required!") + 
+						((data.volume) ? ", " + data.volume : "") +
+						"<\/em>" + 
+						((data.number) ? "(" + data.number + ")" : "") + 
+						((data.pages) ? ", p." + data.pages : "") + 
+						".";
 				}
-				else if (v == 'vancouver') {
-					return authors2html(data.author, v) + ". \"" + data.title + "\". " + data.journal + " " + data.year + "; " + data.volume + "(" + data.number + "):" + data.pages + ".";
+				else if (formatValue == 'vancouver') {
+					return authors2html(data.author, formatValue) + ". \"" +
+						((data.title) ? data.title : "Title is required!") + "\". " +
+						((data.journal) ? data.journal : "Journal is required!") + " " +
+						((data.year) ? data.year : "Year is required!") +
+						((data.volume) ? "; " + data.volume : "") +
+						((data.number) ? "(" + data.number + ")" : "") +
+						((data.pages) ? ":" + data.pages : "") + 
+						".";
 				}
 			}
 			else if (data.entryType == "book") {
-				if (v == 'mla') {
-					return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+				if (formatValue == 'mla') {
+					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
 				}
-				else if (v == 'apa') {
-					return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+				else if (formatValue == 'apa') {
+					return authors2html(data.author, formatValue) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
 				}
-				else if (v == 'chicago') {
-					return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
+				else if (formatValue == 'chicago') {
+					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
 				}
-				else if (v == 'harvard') {
-					return authors2html(data.author, v) + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
+				else if (formatValue == 'harvard') {
+					return authors2html(data.author, formatValue) + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
 				}
-				else if (v == 'vancouver') {
-					return authors2html(data.author, v) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
+				else if (formatValue == 'vancouver') {
+					return authors2html(data.author, formatValue) + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
 				}
-			}
-			else if (data.entryType == "booklet") {
-				return 'booklet...'
 			}
 			else if (data.entryType == "inproceedings") {
-				if (v == 'mla') {
-					return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
+				if (formatValue == 'mla') {
+					return authors2html(data.author, formatValue) + ". \"" + data.title + ".\" " + "<em>" + data.booktitle + "<\/em>. " + data.publisher + ", " + data.year + ".";
 				}
-				else if (v == 'apa') {
-					return authors2html(data.author, v) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
+				else if (formatValue == 'apa') {
+					return authors2html(data.author, formatValue) + " (" + data.year + "). " + data.title + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ".";
 				}
-				else if (v == 'chicago') {
-					return authors2html(data.author, v) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+				else if (formatValue == 'chicago') {
+					return authors2html(data.author, formatValue) + ". \"" + data.title + ".\" " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
 				}
-				else if (v == 'harvard') {
-					return authors2html(data.author, v) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
+				else if (formatValue == 'harvard') {
+					return authors2html(data.author, formatValue) + " " + data.year + ". " + data.title + ". " + ". In <em>" + data.booktitle + "<\/em> (pp. " + data.pages + "). " + data.publisher + ", " + data.year + ".";
 				}
-				else if (v == 'vancouver') {
-					return authors2html(data.author, v) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
+				else if (formatValue == 'vancouver') {
+					return authors2html(data.author, formatValue) + data.title + ". " + ". In " + data.booktitle + data.year + " " + " (pp. " + data.pages + "). " + data.publisher + ".";
 				}
 			}
 			else if (data.entryType == 'phdthesis') {
-				if (v == 'mla') {
-					return authors2html(data.author, v) + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
+				if (formatValue == 'mla') {
+					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em>. Diss." + data.school + ", " + data.year + ".";
 				}
-				else if (v == 'apa') {
-					return authors2html(data.author, v) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+				else if (formatValue == 'apa') {
+					return authors2html(data.author, formatValue) + " (" + data.year + "). <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
 				}
-				else if (v == 'chicago') {
-					return authors2html(data.author, v) + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
+				else if (formatValue == 'chicago') {
+					return authors2html(data.author, formatValue) + ". \"" + data.title + ".\" " + "PhD diss., " + data.school + ", " + data.year + ". ";
 				}
-				else if (v == 'harvard') {
-					return authors2html(data.author, v) + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
+				else if (formatValue == 'harvard') {
+					return authors2html(data.author, formatValue) + ", " + data.year + ". <em>" + data.title + "<\/em>. (Doctoral dissertation, " + data.school + ").";
 				}
-				else if (v == 'vancouver') {
-					return authors2html(data.author, v) + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
+				else if (formatValue == 'vancouver') {
+					return authors2html(data.author, formatValue) + ". <em>" + data.title + "<\/em> (Doctoral dissertation, " + data.school + ").";
 				}
 			}
 			else {
@@ -384,55 +425,52 @@
 
 		}
 
-		// CONVERT BUTTON
-
+		// Function called to convert BibTeX to other format
 		function convert() {
 
-			y.value = '';
+			// Reset output
+			toInput.value = '';
 
-			var contents = x.value;
+			// Contents to format
+			var contents = fromArea.value;
 
+			// If empty, return nothing!
 			if (contents == '') {
-				console.log('Nothing to call!');
+				console.log('Contents are empty!');
 				return;
 			}
 
+			// BIBTEX PARSER
 			bibtex = new BibTex();
 			bibtex.content = contents;
 			bibtex.parse();
-
 			console.log(bibtex);
-			//alert(print_r(bibtex.data, true));
-			//alert( bibtex.bibTex());
-			//alert( bibtex.html());
-			//alert( bibtex.rtf());
 
+			// For each parsed citation
 			for (var i in bibtex.data) {
 
-				var entryData = bibtex.data[i];
+				// Get citation
+				var citation = bibtex.data[i];
 
-				var output = format(entryData);
-				console.log(output);
-
-				y.value += output + "<br><br>";
-
+				// Format citation
+				var output = format(citation);
+				
+				// Show
+				toInput.value += htmlify(output) + "\n\n";
 			}
 		}
 
-		// Copy text tooltip
+		// Copy text & tooltip!
 		function copyFunction() {
-			var copyText = document.getElementById("to");
-			copyText.select();
-			copyText.setSelectionRange(0, 99999);
-			document.execCommand("copy");
-
-			var ctooltip = document.getElementById("mycTooltip");
-			ctooltip.innerHTML = "Copied!";
+			toInput.select(); // Select text
+			toInput.setSelectionRange(0, 99999); // for mobile devices
+			document.execCommand("copy"); // Copy!
+			ctooltip.innerHTML = "Copied!"; // Tooltip!
 		}
 
+		// Tooltip after copying!
 		function outFunc() {
-			var ctooltip = document.getElementById("mycTooltip");
-			ctooltip.innerHTML = "Copy to clipboard";
+			ctooltip.innerHTML = "Copy to clipboard"; // Tooltip!
 		}
 
 	</script>
