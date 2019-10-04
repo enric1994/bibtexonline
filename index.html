@@ -537,22 +537,11 @@
 		// Copy text & tooltip!
 		function copyFunction() {
 			
-			//toInput.select(); // Select text
-			//toInput.setSelectionRange(0, 99999); // for mobile devices
-			//document.execCommand("copy"); // Copy!
-			
-			if (document.selection)
-			{
-				var div = document.body.createTextRange();
-				div.moveToElementText(document.getElementById("divid"));
-				div.select();
-			}
-			else {
-				var div = document.createRange();
-				div.setStartBefore(toDiv);
-				div.setEndAfter(toDiv) ;
-				window.getSelection().addRange(div);
-			}
+			var div = document.createRange();
+			window.getSelection().removeAllRanges(); // clear current selection
+			div.setStartBefore(toDiv);
+			div.setEndAfter(toDiv) ;
+			window.getSelection().addRange(div);
 			document.execCommand("copy"); // Copy!
 
 			ctooltip.innerHTML = "Copied!"; // Tooltip!
