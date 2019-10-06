@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- 
+		,.
+		(_|,.
+	   ,' /, )_______   _
+	__j o``-'        `.'-)'
+   (")                 \'
+	`-j                |
+	  `-._(           /
+         |_\  |--^.  /
+		/_]'|_| /_)_/
+		   /_]'  /_]'
+teach me Javascript plx
+		    -->
+
 <head>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149266625-1"></script>
@@ -23,29 +37,13 @@
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 	<!--===============================================================================================-->
-	<!-- <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css"> -->
-	<!--===============================================================================================-->
-	<!-- <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css"> -->
-	<!--===============================================================================================-->
-	<!-- <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css"> -->
-	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
 	<!--===============================================================================================-->
-	<!-- <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css"> -->
-	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/copy.css">
-
-	<!-- Don't remove this! -->
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	<script>
-		(adsbygoogle = window.adsbygoogle || []).push({
-			google_ad_client: "ca-pub-1148226566858552",
-			enable_page_level_ads: true
-		});
-	</script>
 
 </head>
 
@@ -79,8 +77,8 @@
 					<span class="label-input100">Format:</span>
 					<div>
 						<select class="selection-2" id="format" onchange="convert()">
-							<option value="mla">MLA</option>
 							<option value="apa">APA</option>
+							<option value="mla">MLA</option>
 							<option value="chicago">Chicago</option>
 							<option value="harvard">Harvard</option>
 							<option value="vancouver">Vancouver</option>
@@ -92,13 +90,6 @@
 				<div>
 					<span class="label-input100">Result:</span>
 					<div id="todiv"></div>
-					<!--
-					<div>
-						<textarea style="visibility: hidden" readonly class="input100" style="min-height: 7em" id="to"
-							placeholder="Moreu, E., & Azcona, D. (2019). 1001 ways to disable Adblock. In 2019 Top Website (pp. 951--958)"
-							value=""></textarea>
-					</div>
-					-->
 					<div class="ctooltip">
 						<button type="button" class="copy-button" onclick="copyFunction()" onmouseout="outFunc()">
 							<span class="ctooltiptext" id="mycTooltip">Copy to clipboard</span>
@@ -118,13 +109,11 @@
 			href="mailto:hi@bibtex.online">Contact</a> • <a href="mailto:feedback@bibtex.online">Feedback</a></p>
 
 
-	<button type="button" onclick="test()">Test BibTex!</button>
-	<button type="button" onclick="test2()">Test Multiple!</button>
-
 	<div id="dropDownSelect1"></div>
 
+	<script src="js/BibTex.js"></script>
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="js/core.js"></script>
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
@@ -135,437 +124,12 @@
 		});
 	</script>
 
-	<script src="js/main.js"></script>
-
-	<!-- BibTeX Javascript Parser -->
-	<script src="js/BibTex.js"></script>
-
-	<script>
-
-		// VARIABLES
-
-		var fromArea = document.getElementById("from");
-		// var toInput = document.getElementById("to");
-		var toDiv = document.getElementById("todiv");
-		var formatDropdown = document.getElementById("format");
-		var ctooltip = document.getElementById("mycTooltip");
-
-		// JQUERY: If contents change, call convert function!
-
-		$('#from').bind('input propertychange', function () {
-			convert()
-		})
-
-		// TEST BUTTONS
-
-		function test() {
-
-			fromArea.value = `@inproceedings{azcona2019user2code2vec,
-	author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
-	title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
-	booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
-	series = {LAK19},
-	year = {2019},
-	isbn = {978-1-4503-6256-6},
-	location = {Tempe, AZ, USA},
-	pages = {86--95},
-	numpages = {10},
-	url = {http://doi.acm.org/10.1145/3303772.3303813},
-	doi = {10.1145/3303772.3303813},
-	acmid = {3303813},
-	publisher = {ACM},
-	address = {New York, NY, USA}
-}`;
-			convert();
-
-		}
-
-		function test2() {
-
-			fromArea.value = `@book{madigan1997brock,
-	title={Brock biology of microorganisms},
-	author={Madigan, Michael T and Martinko, John M and Parker, Jack and others},
-	volume={11},
-	year={1997},
-	publisher={Prentice hall Upper Saddle River, NJ}
-}
-
-@article{tonouchi2007cutting,
-	title={Cutting-edge terahertz technology},
-	author={Tonouchi, Masayoshi},
-	journal={Nature photonics},
-	volume={1},
-	number={2},
-	pages={97},
-	year={2007},
-	publisher={Nature Publishing Group}
-}
-
-@phdthesis{corrigan2018investigation,
-	title={An Investigation Into Machine Learning Solutions Involving Time Series Across Different Problem Domains},
-	author={Corrigan, Owen},
-	year={2018},
-	school={Dublin City University}
-}`
-			convert();
-
-		}
-
-		// HELPERS
-
-		// Function to compile LaTeX special characters to HTML
-		var htmlify = function (str) {
-			if (!str) { return ''; }
-			str = str.replace(/\\"\{a\}/g, '&auml;')
-				.replace(/\{\\aa\}/g, '&aring;')
-				.replace(/\\aa\{\}/g, '&aring;')
-				.replace(/\\"a/g, '&auml;')
-				.replace(/\\"\{o\}/g, '&ouml;')
-				.replace(/\\'e/g, '&eacute;')
-				.replace(/\\'\{e\}/g, '&eacute;')
-				.replace(/\\'a/g, '&aacute;')
-				.replace(/\\'A/g, '&Aacute;')
-				.replace(/\\"o/g, '&ouml;')
-				.replace(/\\"u/g, '&uuml;')
-				.replace(/\\ss\{\}/g, '&szlig;')
-				.replace(/\{/g, '')
-				.replace(/\}/g, '')
-				.replace(/\\&/g, '&')
-				.replace(/--/g, '&ndash;');
-			return str;
-		};
-
-		var uriencode = function (str) {
-			if (!str) { return ''; }
-			str = str.replace(/\\"\{a\}/g, '%C3%A4')
-				.replace(/\{\\aa\}/g, '%C3%A5')
-				.replace(/\\aa\{\}/g, '%C3%A5')
-				.replace(/\\"a/g, '%C3%A4')
-				.replace(/\\"\{o\}/g, '%C3%B6')
-				.replace(/\\'e/g, '%C3%A9')
-				.replace(/\\'\{e\}/g, '%C3%A9')
-				.replace(/\\'a/g, '%C3%A1')
-				.replace(/\\'A/g, '%C3%81')
-				.replace(/\\"o/g, '%C3%B6')
-				.replace(/\\"u/g, '%C3%BC')
-				.replace(/\\ss\{\}/g, '%C3%9F')
-				.replace(/\{/g, '')
-				.replace(/\}/g, '')
-				.replace(/\\&/g, '%26')
-				.replace(/--/g, '%E2%80%93');
-			return str;
-		};
-
-		// Function to get initials from authors
-		function get_initials(name) {
-			initials = []
-			words = name.split('-')
-			for (var index = 0; index < words.length; index++) {
-				word = words[index];
-				initial = word[0];
-				initials.push(initial);
-			}
-			return initials
-		}
-
-		// Function to get authors in a particular format from citations
-		function authors2html(authorData, vformat) {
-			var authorsStr = '';
-			var author;
-			if (!authorData) { return authorsStr; }
-			for (var index = 0; index < authorData.length; index++) {
-				if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
-				if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
-				if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
-					if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
-					else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
-				}
-				// Get author
-				author = authorData[index];
-				if (vformat == 'mla' || vformat == 'chicago') {
-					if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
-					else { authorsStr += author.first + ", " + author.last; } // Rest: Piyush Arora
-				}
-				else {
-					initials = get_initials(author.first)
-					if (vformat == 'vancouver') { separator = ""; } // Azcona, D
-					else { separator = "."; } // Azcona, D.
-					authorsStr += author.last + ", " + initials.join(separator) + separator;
-				}
-			}
-			return htmlify(authorsStr);
-		}
-
-		// Function to format the citation based on the format selected
-		function format(data) {
-
-			// Format value: MLA, APA, Chicago, Harvard, Vancouver
-			var formatValue = formatDropdown.options[formatDropdown.selectedIndex].value;
-
-			// Format authors
-			var authors = authors2html(data.author, formatValue);
-			authors = ((authors) ? authors : "Authors are required!");
-
-			// http://bib-it.sourceforge.net/help/fieldsAndEntryTypes.php#article
-			// ARTICLE
-			// An article from a journal or magazine.
-			// Required fields: author, title, journal, year.
-			// Optional fields: volume, number, pages, month, note.
-			if (data.entryType == "article") {
-				var title = ((data.title) ? data.title : "Title is required!");
-				var journal = ((data.journal) ? data.journal : "Journal is required!")
-				var year = ((data.year) ? data.year : "Year is required!")
-				if (formatValue == 'mla') {
-					return authors +
-						". \"" + title + "\". " +
-						"<em>" + journal + "<\/em>" +
-						((data.volume) ? " " + data.volume : "") +
-						". " +
-						((data.number) ? " " + data.number : "") + 
-						"(" + year + ")" +
-						((data.pages) ? ": " + data.pages : "") +
-						".";
-				}
-				else if (formatValue == 'apa') {
-					return authors +
-						" (" + year + "). " + 
-						title + 
-						"<em>" + journal + 
-						((data.volume) ? ", " + data.volume : "") +
-						"<\/em>" +
-						((data.number) ? "(" + data.number + ")" : "") + 
-						((data.pages) ? ", " + data.pages : "") +
-						".";
-				}
-				else if (formatValue == 'chicago') {
-					return authors +
-						". \"" + title + "\"." + 
-						"<em>" + journal + "<\/em>" + 
-						((data.volume) ? " " + data.volume : "") +
-						((data.number) ? ", no." + data.number : "") + 
-						" (" + year + ")" + 
-						((data.pages) ? ": " + data.pages : "") +
-						".";
-				}
-				else if (formatValue == 'harvard') {
-					return authors +
-						" " + year + 
-						". " + title + 
-						". <em>" + journal + 
-						((data.volume) ? ", " + data.volume : "") +
-						"<\/em>" + 
-						((data.number) ? "(" + data.number + ")" : "") + 
-						((data.pages) ? ", p." + data.pages : "") + 
-						".";
-				}
-				else if (formatValue == 'vancouver') {
-					return authors +
-						". \"" + title + "\". " +
-						journal + " " +
-						year +
-						((data.volume) ? "; " + data.volume : "") +
-						((data.number) ? "(" + data.number + ")" : "") +
-						((data.pages) ? ":" + data.pages : "") + 
-						".";
-				}
-			}
-			// IN PROCEEDINGS
-			// An article in a conference proceedings.
-			// Required fields: author, title, booktitle, year.
-			// Optional fields: editor, volume or number, series, pages, address, month, organization, publisher, note.
-			else if (data.entryType == "inproceedings") {
-				var title = ((data.title) ? data.title : "Title is required!");
-				var booktitle = ((data.booktitle) ? data.booktitle : "Book title is required!");
-				var year = ((data.year) ? data.year : "Year is required!");
-				if (formatValue == 'mla') {
-					return authors +
-						". \"" + title + ".\" " + 
-						"<em>" + booktitle + "<\/em>. " + 
-						((data.publisher) ? data.publisher + ", " : "")
-						year + 
-						".";
-				}
-				else if (formatValue == 'apa') {
-					return authors + 
-						" (" + year + "). " + 
-						title + 
-						". In <em>" + booktitle + "<\/em>" + 
-						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
-						"." +
-						((data.publisher) ? " " + data.publisher + "." : "");
-				}
-				else if (formatValue == 'chicago') {
-					return authors + 
-						". \"" + title + ".\" " + 
-						". In <em>" + booktitle + "<\/em>" +
-						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
-						"." +
-						((data.publisher) ? " " + data.publisher + ", ": "") +
-						year + ".";
-				}
-				else if (formatValue == 'harvard') {
-					return authors + 
-						" " + year + 
-						". " + title + 
-						". In <em>" + data.booktitle + "<\/em>" +
-						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
-						"." +
-						((data.publisher) ? " " + data.publisher + ".": "");
-				}
-				else if (formatValue == 'vancouver') {
-					return authors + 
-						title + 
-						". In " + booktitle + " "
-						data.year + " " + 
-						((data.pages) ? " (pp. " + data.pages + ")" : "") + 
-						"." +
-						((data.publisher) ? " " + data.publisher + ".": "");
-				}
-			}
-			// BOOK
-			// A book with an explicit publisher.
-			// Required fields: author or editor, title, publisher, year.
-			// Optional fields: volume or number, series, address, edition, month, note.
-			else if (data.entryType == "book") {
-				var title = ((data.title) ? data.title : "Title is required!");
-				var publisher = ((data.publisher) ? data.publisher : "Publisher is required!");
-				var year = ((data.year) ? data.year : "Year is required!");
-				if (authors == "Authors are required!") { 
-					authors = ((data.editor) ? data.editor : "Author or Editor is required!");
-				}
-				if (formatValue == 'mla') {
-					return authors + 
-						". <em>" + title + "<\/em>." + 
-						((data.volume) ? " Vol. " + data.volume : "") +  
-						". " + 
-						publisher + ", " + 
-						year + ".";
-				}
-				else if (formatValue == 'apa') {
-					return authors + " (" + data.year + "). <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
-				}
-				else if (formatValue == 'chicago') {
-					return authors + ". <em>" + data.title + "<\/em>. Vol. " + data.volume + ". " + data.publisher + ", " + data.year + ".";
-				}
-				else if (formatValue == 'harvard') {
-					return authors + " " + data.year + ". " + ". <em>" + data.title + "<\/em>. (Vol. " + data.volume + "). " + data.publisher + ".";
-				}
-				else if (formatValue == 'vancouver') {
-					return authors + ". " + data.title + ". " + data.publisher + "; " + data.year + ".";
-				}
-			}
-			// PHD THESIS
-			// A Ph.D. thesis.
-			// Required fields: author, title, school, year.
-			// Optional fields: type, address, month, note.
-			else if (data.entryType == 'phdthesis') {
-				var title = ((data.title) ? data.title : "Title is required!");
-				var school = ((data.school) ? data.school : "School is required!");
-				var year = ((data.year) ? data.year : "Year is required!");
-				if (formatValue == 'mla') {
-					return authors + 
-						". <em>" + title + "<\/em>" +
-						". Diss." + school + 
-						", " + year + ".";
-				}
-				else if (formatValue == 'apa') {
-					return authors + 
-						" (" + year + "). " + 
-						"<em>" + title + "<\/em>." +
-						" (Doctoral dissertation, " + school + ").";
-				}
-				else if (formatValue == 'chicago') {
-					return authors + 
-						". \"" + title + ".\" " + 
-						"PhD diss., " + school + ", " + 
-						year + ". ";
-				}
-				else if (formatValue == 'harvard') {
-					return authors + 
-						", " + year + 
-						". <em>" + title + "<\/em>." + 
-						" (Doctoral dissertation, " + school + ").";
-				}
-				else if (formatValue == 'vancouver') {
-					return authors + 
-						". <em>" + title + "<\/em>" + 
-						" (Doctoral dissertation, " + school + ").";
-				}
-			}
-			else {
-				return 'Format ' + data.entryType + ' not supported yet!'
-			}
-		}
-
-		// Function called to convert BibTeX to other format
-		function convert() {
-
-			// Reset output
-			// toInput.value = '';
-			toDiv.innerHTML = '';
-
-			// Contents to format
-			var contents = fromArea.value;
-
-			// If empty, return nothing!
-			if (contents == '') {
-				console.log('Contents are empty!');
-				return;
-			}
-
-			// BIBTEX PARSER
-			bibtex = new BibTex();
-			bibtex.content = contents;
-			bibtex.parse();
-			console.log(bibtex);
-
-			// For each parsed citation
-			for (var i in bibtex.data) {
-
-				// Get citation
-				var citation = bibtex.data[i];
-
-				// Format citation
-				var output = format(citation);
-				
-				// Show
-				// toInput.value += htmlify(output) + "\n\n";
-				toDiv.innerHTML += htmlify(output) + "<br><br>";
-			}
-		}
-
-		// Copy text & tooltip!
-		function copyFunction() {
-			
-			var div = document.createRange();
-			window.getSelection().removeAllRanges(); // clear current selection
-			div.setStartBefore(toDiv);
-			div.setEndAfter(toDiv) ;
-			window.getSelection().addRange(div);
-			document.execCommand("copy"); // Copy!
-
-			ctooltip.innerHTML = "Copied!"; // Tooltip!
-		}
-
-		// Tooltip after copying!
-		function outFunc() {
-			ctooltip.innerHTML = "Copy to clipboard"; // Tooltip!
-		}
-
-	</script>
-
-	<script type="text/javascript" id="cookieinfo" 
-		src="js/cookieinfo.min.js"
+	<script type="text/javascript" id="cookieinfo" src="js/cookieinfo.min.js"
 		data-message="Cookies🍪? We eat them, but we also use them to track visits to our website, we store no personal details. By continuing to visit this site you agree to our use of cookies. "
-		data-bg="#c4c4c4"
-		data-fg="#000000"
-		data-link="#000000"
-		data-moreinfo="https://en.wikipedia.org/wiki/HTTP_cookie"
-		data-divlinkbg="#595959"
-		data-cookie="CookieInfoScript"
-		data-close-text="🍪👍"
-		data-font-family="Poppins-Medium">
-	</script>
+		data-bg="#c4c4c4" data-fg="#000000" data-link="#000000"
+		data-moreinfo="https://en.wikipedia.org/wiki/HTTP_cookie" data-divlinkbg="#595959"
+		data-cookie="CookieInfoScript" data-close-text="🍪👍" data-font-family="Poppins-Medium">
+		</script>
 </body>
 
 </html>
