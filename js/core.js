@@ -1,1 +1,459 @@
-var _0x1bf0=['first','vancouver','join','startsWith','<a\x20href=\x22','\x22\x20target=\x22_blank\x22>','</a>','options','selectedIndex','author','article','Authors\x20are\x20required!','title','<strong\x20style=\x27color:red;\x27>Title\x20is\x20required!</strong>','journal','<strong\x20style=\x27color:red;\x27>Journal\x20is\x20required!</strong>','year','<strong\x20style=\x27color:red;\x27>Year\x20is\x20required!</strong>','.\x20\x22','\x22.\x20','<em>','</em>','volume','number','pages',').\x20',',\x20no.',',\x20p.','entryType','inproceedings','booktitle','.\x22\x20','</em>.\x20','apa','.\x20In\x20<em>','\x20(pp.\x20','publisher','book','<strong\x20style=\x27color:red;\x27>Publisher\x20is\x20required!</strong>','editor','.\x20<em>','</em>.','\x20Vol.\x20','\x20(Vol.\x20','phdthesis','school','<strong\x20style=\x27color:red;\x27>School\x20is\x20required!</strong>','.\x20Diss.','PhD\x20diss.,\x20','\x20(Doctoral\x20dissertation,\x20','misc','howpublished','\x20not\x20supported\x20yet!','innerHTML','Contents\x20are\x20empty!','content','parse','log','data','<br><br>','createRange','getSelection','removeAllRanges','setStartBefore','addRange','execCommand','copy','Copied!','Copy\x20to\x20clipboard','from','todiv','getElementById','format','mycTooltip','bind','input\x20propertychange','value','@inproceedings{azcona2019user2code2vec,\x0aauthor\x20=\x20{Azcona,\x20David\x20and\x20Arora,\x20Piyush\x20and\x20Hsiao,\x20I-Han\x20and\x20Smeaton,\x20Alan},\x0atitle\x20=\x20{User2Code2Vec:\x20Embeddings\x20for\x20Profiling\x20Students\x20Based\x20on\x20Distributional\x20Representations\x20of\x20Source\x20Code},\x0abooktitle\x20=\x20{Proceedings\x20of\x20the\x209th\x20International\x20Conference\x20on\x20Learning\x20Analytics\x20&\x20Knowledge},\x0aseries\x20=\x20{LAK19},\x0ayear\x20=\x20{2019},\x0aisbn\x20=\x20{978-1-4503-6256-6},\x0alocation\x20=\x20{Tempe,\x20AZ,\x20USA},\x0apages\x20=\x20{86--95},\x0anumpages\x20=\x20{10},\x0aurl\x20=\x20{http://doi.acm.org/10.1145/3303772.3303813},\x0adoi\x20=\x20{10.1145/3303772.3303813},\x0aacmid\x20=\x20{3303813},\x0apublisher\x20=\x20{ACM},\x0aaddress\x20=\x20{New\x20York,\x20NY,\x20USA}\x0a}','replace','&auml;','&aring;','&aacute;','&Aacute;','&ouml;','&uuml;','&szlig;','%C3%A4','%C3%A5','%C3%A9','%C3%A1','%C3%B6','%C3%BC','%C3%9F','%26','%E2%80%93','split','length','\x20et\x20al','chicago','harvard','mla','last'];(function(_0x1f7406,_0x52c684){var _0x37fc12=function(_0x34d7fc){while(--_0x34d7fc){_0x1f7406['push'](_0x1f7406['shift']());}};_0x37fc12(++_0x52c684);}(_0x1bf0,0x177));var _0x55b5=function(_0x510c0f,_0x5adb94){_0x510c0f=_0x510c0f-0x0;var _0x47b0a7=_0x1bf0[_0x510c0f];return _0x47b0a7;};var fromArea=document['getElementById'](_0x55b5('0x0'));var toDiv=document['getElementById'](_0x55b5('0x1'));var formatDropdown=document[_0x55b5('0x2')](_0x55b5('0x3'));var ctooltip=document[_0x55b5('0x2')](_0x55b5('0x4'));$('#from')[_0x55b5('0x5')](_0x55b5('0x6'),function(){convert();});function test(){fromArea[_0x55b5('0x7')]=_0x55b5('0x8');convert();}function test2(){fromArea[_0x55b5('0x7')]='@book{madigan1997brock,\x0atitle={Brock\x20biology\x20of\x20microorganisms},\x0aauthor={Madigan,\x20Michael\x20T\x20and\x20Martinko,\x20John\x20M\x20and\x20Parker,\x20Jack\x20and\x20others},\x0avolume={11},\x0ayear={1997},\x0apublisher={Prentice\x20hall\x20Upper\x20Saddle\x20River,\x20NJ}\x0a}\x0a\x0a@article{tonouchi2007cutting,\x0atitle={Cutting-edge\x20terahertz\x20technology},\x0aauthor={Tonouchi,\x20Masayoshi},\x0ajournal={Nature\x20photonics},\x0avolume={1},\x0anumber={2},\x0apages={97},\x0ayear={2007},\x0apublisher={Nature\x20Publishing\x20Group}\x0a}\x20\x20\x0a\x0a@phdthesis{corrigan2018investigation,\x0atitle={An\x20Investigation\x20Into\x20Machine\x20Learning\x20Solutions\x20Involving\x20Time\x20Series\x20Across\x20Different\x20Problem\x20Domains},\x0aauthor={Corrigan,\x20Owen},\x0ayear={2018},\x0aschool={Dublin\x20City\x20University}\x0a}';convert();}var htmlify=function(_0x5799e0){if(!_0x5799e0){return'';}_0x5799e0=_0x5799e0[_0x55b5('0x9')](/\\"\{a\}/g,_0x55b5('0xa'))[_0x55b5('0x9')](/\{\\aa\}/g,'&aring;')[_0x55b5('0x9')](/\\aa\{\}/g,_0x55b5('0xb'))[_0x55b5('0x9')](/\\"a/g,_0x55b5('0xa'))['replace'](/\\"\{o\}/g,'&ouml;')[_0x55b5('0x9')](/\\'e/g,'&eacute;')[_0x55b5('0x9')](/\\'\{e\}/g,'&eacute;')[_0x55b5('0x9')](/\\'a/g,_0x55b5('0xc'))[_0x55b5('0x9')](/\\'A/g,_0x55b5('0xd'))[_0x55b5('0x9')](/\\"o/g,_0x55b5('0xe'))[_0x55b5('0x9')](/\\"u/g,_0x55b5('0xf'))['replace'](/\\ss\{\}/g,_0x55b5('0x10'))[_0x55b5('0x9')](/\{/g,'')[_0x55b5('0x9')](/\}/g,'')[_0x55b5('0x9')](/\\&/g,'&')[_0x55b5('0x9')](/--/g,'&ndash;');return _0x5799e0;};var uriencode=function(_0x48bfb7){if(!_0x48bfb7){return'';}_0x48bfb7=_0x48bfb7[_0x55b5('0x9')](/\\"\{a\}/g,_0x55b5('0x11'))['replace'](/\{\\aa\}/g,_0x55b5('0x12'))[_0x55b5('0x9')](/\\aa\{\}/g,_0x55b5('0x12'))[_0x55b5('0x9')](/\\"a/g,_0x55b5('0x11'))['replace'](/\\"\{o\}/g,'%C3%B6')[_0x55b5('0x9')](/\\'e/g,_0x55b5('0x13'))[_0x55b5('0x9')](/\\'\{e\}/g,_0x55b5('0x13'))[_0x55b5('0x9')](/\\'a/g,_0x55b5('0x14'))['replace'](/\\'A/g,'%C3%81')[_0x55b5('0x9')](/\\"o/g,_0x55b5('0x15'))['replace'](/\\"u/g,_0x55b5('0x16'))['replace'](/\\ss\{\}/g,_0x55b5('0x17'))[_0x55b5('0x9')](/\{/g,'')[_0x55b5('0x9')](/\}/g,'')[_0x55b5('0x9')](/\\&/g,_0x55b5('0x18'))[_0x55b5('0x9')](/--/g,_0x55b5('0x19'));return _0x48bfb7;};function get_initials(_0x5d0363){initials=[];words=_0x5d0363[_0x55b5('0x1a')]('-');for(var _0x397f78=0x0;_0x397f78<words[_0x55b5('0x1b')];_0x397f78++){word=words[_0x397f78];initial=word[0x0];initials['push'](initial);}return initials;}function authors2html(_0x372e4c,_0x3aa1de){var _0x256fba='';var _0x2a5cb5;if(!_0x372e4c){return _0x256fba;}for(var _0x27edef=0x0;_0x27edef<_0x372e4c[_0x55b5('0x1b')];_0x27edef++){if(_0x3aa1de=='mla'&&_0x27edef>0x0){_0x256fba+=_0x55b5('0x1c');break;}if(_0x27edef>0x0){_0x256fba+=',\x20';}if(_0x27edef>0x0&&_0x27edef==_0x372e4c[_0x55b5('0x1b')]-0x1){if(_0x3aa1de=='apa'){_0x256fba+='&\x20';}else if(_0x3aa1de==_0x55b5('0x1d')||_0x3aa1de==_0x55b5('0x1e')){_0x256fba+='and\x20';}}_0x2a5cb5=_0x372e4c[_0x27edef];if(_0x3aa1de==_0x55b5('0x1f')||_0x3aa1de==_0x55b5('0x1d')){if(_0x27edef==0x0){_0x256fba+=_0x2a5cb5[_0x55b5('0x20')]+',\x20'+_0x2a5cb5[_0x55b5('0x21')];}else{_0x256fba+=_0x2a5cb5['first']+(_0x2a5cb5[_0x55b5('0x21')]&&_0x2a5cb5[_0x55b5('0x20')]?',\x20':'')+_0x2a5cb5[_0x55b5('0x20')];}}else{initials=get_initials(_0x2a5cb5[_0x55b5('0x21')]);if(_0x3aa1de==_0x55b5('0x22')){separator='';}else{separator='.';}_0x256fba+=_0x2a5cb5[_0x55b5('0x20')]+(_0x2a5cb5['first']?',\x20'+initials[_0x55b5('0x23')](separator)+separator:'');}}return htmlify(_0x256fba);}function howpublished2readable(_0x2009f7){var _0x42be84='';if(_0x2009f7&&_0x2009f7[_0x55b5('0x24')]('\x5curl{')&&_0x2009f7['endsWith']('}')){var _0x8f252d=_0x2009f7[_0x55b5('0x1a')]('\x5curl{')[0x1]['split']('}')[0x0];_0x42be84=_0x55b5('0x25')+_0x8f252d+_0x55b5('0x26')+_0x8f252d+_0x55b5('0x27');}return htmlify(_0x42be84);}function format(_0x26b81b){var _0x4ae1e0=formatDropdown[_0x55b5('0x28')][formatDropdown[_0x55b5('0x29')]][_0x55b5('0x7')];var _0x5d02e6=authors2html(_0x26b81b[_0x55b5('0x2a')],_0x4ae1e0);if(_0x26b81b['entryType']==_0x55b5('0x2b')){_0x5d02e6=_0x5d02e6?_0x5d02e6:_0x55b5('0x2c');var _0x599de3=_0x26b81b[_0x55b5('0x2d')]?_0x26b81b[_0x55b5('0x2d')]:_0x55b5('0x2e');var _0x58e60b=_0x26b81b['journal']?_0x26b81b[_0x55b5('0x2f')]:_0x55b5('0x30');var _0x496ed3=_0x26b81b[_0x55b5('0x31')]?_0x26b81b[_0x55b5('0x31')]:_0x55b5('0x32');if(_0x4ae1e0==_0x55b5('0x1f')){return _0x5d02e6+_0x55b5('0x33')+_0x599de3+_0x55b5('0x34')+_0x55b5('0x35')+_0x58e60b+_0x55b5('0x36')+(_0x26b81b[_0x55b5('0x37')]?'\x20'+_0x26b81b[_0x55b5('0x37')]:'')+'.\x20'+(_0x26b81b[_0x55b5('0x38')]?'\x20'+_0x26b81b[_0x55b5('0x38')]:'')+'('+_0x496ed3+')'+(_0x26b81b[_0x55b5('0x39')]?':\x20'+_0x26b81b[_0x55b5('0x39')]:'')+'.';}else if(_0x4ae1e0=='apa'){return _0x5d02e6+'\x20('+_0x496ed3+_0x55b5('0x3a')+_0x599de3+_0x55b5('0x35')+_0x58e60b+(_0x26b81b[_0x55b5('0x37')]?',\x20'+_0x26b81b[_0x55b5('0x37')]:'')+_0x55b5('0x36')+(_0x26b81b['number']?'('+_0x26b81b[_0x55b5('0x38')]+')':'')+(_0x26b81b[_0x55b5('0x39')]?',\x20'+_0x26b81b[_0x55b5('0x39')]:'')+'.';}else if(_0x4ae1e0==_0x55b5('0x1d')){return _0x5d02e6+_0x55b5('0x33')+_0x599de3+'\x22.'+_0x55b5('0x35')+_0x58e60b+_0x55b5('0x36')+(_0x26b81b[_0x55b5('0x37')]?'\x20'+_0x26b81b['volume']:'')+(_0x26b81b[_0x55b5('0x38')]?_0x55b5('0x3b')+_0x26b81b[_0x55b5('0x38')]:'')+'\x20('+_0x496ed3+')'+(_0x26b81b[_0x55b5('0x39')]?':\x20'+_0x26b81b['pages']:'')+'.';}else if(_0x4ae1e0==_0x55b5('0x1e')){return _0x5d02e6+'\x20'+_0x496ed3+'.\x20'+_0x599de3+'.\x20<em>'+_0x58e60b+(_0x26b81b[_0x55b5('0x37')]?',\x20'+_0x26b81b[_0x55b5('0x37')]:'')+_0x55b5('0x36')+(_0x26b81b[_0x55b5('0x38')]?'('+_0x26b81b['number']+')':'')+(_0x26b81b[_0x55b5('0x39')]?_0x55b5('0x3c')+_0x26b81b['pages']:'')+'.';}else if(_0x4ae1e0==_0x55b5('0x22')){return _0x5d02e6+_0x55b5('0x33')+_0x599de3+_0x55b5('0x34')+_0x58e60b+'\x20'+_0x496ed3+(_0x26b81b[_0x55b5('0x37')]?';\x20'+_0x26b81b[_0x55b5('0x37')]:'')+(_0x26b81b[_0x55b5('0x38')]?'('+_0x26b81b[_0x55b5('0x38')]+')':'')+(_0x26b81b[_0x55b5('0x39')]?':'+_0x26b81b[_0x55b5('0x39')]:'')+'.';}}else if(_0x26b81b[_0x55b5('0x3d')]==_0x55b5('0x3e')){_0x5d02e6=_0x5d02e6?_0x5d02e6:_0x55b5('0x2c');var _0x599de3=_0x26b81b[_0x55b5('0x2d')]?_0x26b81b[_0x55b5('0x2d')]:_0x55b5('0x2e');var _0xd49e4e=_0x26b81b[_0x55b5('0x3f')]?_0x26b81b['booktitle']:'<strong\x20style=\x27color:red;\x27>Book\x20title\x20is\x20required!</strong>';var _0x496ed3=_0x26b81b[_0x55b5('0x31')]?_0x26b81b[_0x55b5('0x31')]:'<strong\x20style=\x27color:red;\x27>Year\x20is\x20required!</strong>';if(_0x4ae1e0=='mla'){return _0x5d02e6+_0x55b5('0x33')+_0x599de3+_0x55b5('0x40')+_0x55b5('0x35')+_0xd49e4e+_0x55b5('0x41')+(_0x26b81b['publisher']?_0x26b81b['publisher']+',\x20':'');_0x496ed3+'.';}else if(_0x4ae1e0==_0x55b5('0x42')){return _0x5d02e6+'\x20('+_0x496ed3+_0x55b5('0x3a')+_0x599de3+_0x55b5('0x43')+_0xd49e4e+_0x55b5('0x36')+(_0x26b81b[_0x55b5('0x39')]?_0x55b5('0x44')+_0x26b81b[_0x55b5('0x39')]+')':'')+'.'+(_0x26b81b[_0x55b5('0x45')]?'\x20'+_0x26b81b[_0x55b5('0x45')]+'.':'');}else if(_0x4ae1e0==_0x55b5('0x1d')){return _0x5d02e6+_0x55b5('0x33')+_0x599de3+_0x55b5('0x40')+_0x55b5('0x43')+_0xd49e4e+_0x55b5('0x36')+(_0x26b81b[_0x55b5('0x39')]?_0x55b5('0x44')+_0x26b81b[_0x55b5('0x39')]+')':'')+'.'+(_0x26b81b[_0x55b5('0x45')]?'\x20'+_0x26b81b[_0x55b5('0x45')]+',\x20':'')+_0x496ed3+'.';}else if(_0x4ae1e0==_0x55b5('0x1e')){return _0x5d02e6+'\x20'+_0x496ed3+'.\x20'+_0x599de3+_0x55b5('0x43')+_0x26b81b[_0x55b5('0x3f')]+_0x55b5('0x36')+(_0x26b81b[_0x55b5('0x39')]?_0x55b5('0x44')+_0x26b81b[_0x55b5('0x39')]+')':'')+'.'+(_0x26b81b[_0x55b5('0x45')]?'\x20'+_0x26b81b['publisher']+'.':'');}else if(_0x4ae1e0==_0x55b5('0x22')){return _0x5d02e6+_0x599de3+'.\x20In\x20'+_0xd49e4e+'\x20'+_0x26b81b[_0x55b5('0x31')]+'\x20'+(_0x26b81b[_0x55b5('0x39')]?_0x55b5('0x44')+_0x26b81b[_0x55b5('0x39')]+')':'')+'.'+(_0x26b81b[_0x55b5('0x45')]?'\x20'+_0x26b81b['publisher']+'.':'');}}else if(_0x26b81b['entryType']==_0x55b5('0x46')){_0x5d02e6=_0x5d02e6?_0x5d02e6:_0x55b5('0x2c');var _0x599de3=_0x26b81b[_0x55b5('0x2d')]?_0x26b81b['title']:_0x55b5('0x2e');var _0x2e696d=_0x26b81b[_0x55b5('0x45')]?_0x26b81b[_0x55b5('0x45')]:_0x55b5('0x47');var _0x496ed3=_0x26b81b[_0x55b5('0x31')]?_0x26b81b[_0x55b5('0x31')]:_0x55b5('0x32');if(_0x5d02e6==_0x55b5('0x2c')){_0x5d02e6=_0x26b81b['editor']?_0x26b81b[_0x55b5('0x48')]:'<strong\x20style=\x27color:red;\x27>Author\x20or\x20Editor\x20is\x20required!</strong>';}if(_0x4ae1e0==_0x55b5('0x1f')){return _0x5d02e6+_0x55b5('0x49')+_0x599de3+_0x55b5('0x4a')+(_0x26b81b[_0x55b5('0x37')]?_0x55b5('0x4b')+_0x26b81b[_0x55b5('0x37')]:'')+'.\x20'+_0x2e696d+',\x20'+_0x496ed3+'.';}else if(_0x4ae1e0=='apa'){return _0x5d02e6+'\x20('+_0x496ed3+').\x20<em>'+_0x599de3+_0x55b5('0x4a')+(_0x26b81b[_0x55b5('0x37')]?_0x55b5('0x4c')+_0x26b81b[_0x55b5('0x37')]+')\x20':'\x20')+_0x2e696d+'.';}else if(_0x4ae1e0=='chicago'){return _0x5d02e6+'.\x20<em>'+_0x599de3+_0x55b5('0x4a')+(_0x26b81b['volume']?_0x55b5('0x4b')+_0x26b81b['volume']+'.\x20':'')+_0x2e696d+',\x20'+_0x496ed3+'.';}else if(_0x4ae1e0==_0x55b5('0x1e')){return _0x5d02e6+'\x20'+_0x496ed3+'.\x20'+'.\x20<em>'+_0x599de3+_0x55b5('0x4a')+(_0x26b81b[_0x55b5('0x37')]?_0x55b5('0x4c')+_0x26b81b[_0x55b5('0x37')]+').\x20':'\x20')+_0x2e696d+'.';}else if(_0x4ae1e0==_0x55b5('0x22')){return _0x5d02e6+'.\x20'+_0x599de3+'.\x20'+_0x2e696d+';\x20'+_0x496ed3+'.';}}else if(_0x26b81b['entryType']==_0x55b5('0x4d')){_0x5d02e6=_0x5d02e6?_0x5d02e6:_0x55b5('0x2c');var _0x599de3=_0x26b81b[_0x55b5('0x2d')]?_0x26b81b[_0x55b5('0x2d')]:_0x55b5('0x2e');var _0x428784=_0x26b81b['school']?_0x26b81b[_0x55b5('0x4e')]:_0x55b5('0x4f');var _0x496ed3=_0x26b81b[_0x55b5('0x31')]?_0x26b81b[_0x55b5('0x31')]:_0x55b5('0x32');if(_0x4ae1e0==_0x55b5('0x1f')){return _0x5d02e6+'.\x20<em>'+_0x599de3+_0x55b5('0x36')+_0x55b5('0x50')+_0x428784+',\x20'+_0x496ed3+'.';}else if(_0x4ae1e0==_0x55b5('0x42')){return _0x5d02e6+'\x20('+_0x496ed3+_0x55b5('0x3a')+_0x55b5('0x35')+_0x599de3+_0x55b5('0x4a')+'\x20(Doctoral\x20dissertation,\x20'+_0x428784+').';}else if(_0x4ae1e0=='chicago'){return _0x5d02e6+_0x55b5('0x33')+_0x599de3+_0x55b5('0x40')+_0x55b5('0x51')+_0x428784+',\x20'+_0x496ed3+'.\x20';}else if(_0x4ae1e0==_0x55b5('0x1e')){return _0x5d02e6+',\x20'+_0x496ed3+_0x55b5('0x49')+_0x599de3+_0x55b5('0x4a')+_0x55b5('0x52')+_0x428784+').';}else if(_0x4ae1e0==_0x55b5('0x22')){return _0x5d02e6+'.\x20<em>'+_0x599de3+_0x55b5('0x36')+_0x55b5('0x52')+_0x428784+').';}}else if(_0x26b81b['entryType']==_0x55b5('0x53')){if(_0x4ae1e0==_0x55b5('0x1f')||_0x4ae1e0==_0x55b5('0x1d')){return(_0x5d02e6?_0x5d02e6+'.\x20':'')+(_0x26b81b[_0x55b5('0x2d')]?'\x22'+_0x26b81b[_0x55b5('0x2d')]+_0x55b5('0x40'):'')+(_0x26b81b[_0x55b5('0x54')]?howpublished2readable(_0x26b81b['howpublished'])+'.\x20':'')+(_0x26b81b[_0x55b5('0x31')]?'\x20('+_0x26b81b[_0x55b5('0x31')]+_0x55b5('0x3a'):'');}else if(_0x4ae1e0=='apa'||_0x4ae1e0=='harvard'){return(_0x5d02e6?_0x5d02e6+'.\x20':'')+(_0x26b81b[_0x55b5('0x31')]?'\x20('+_0x26b81b['year']+_0x55b5('0x3a'):'')+(_0x26b81b[_0x55b5('0x2d')]?_0x26b81b[_0x55b5('0x2d')]+'.\x20':'')+(_0x26b81b[_0x55b5('0x54')]?howpublished2readable(_0x26b81b[_0x55b5('0x54')])+'.\x20':'');}else if(_0x4ae1e0==_0x55b5('0x22')){return(_0x5d02e6?_0x5d02e6+'.\x20':'')+(_0x26b81b['title']?_0x26b81b[_0x55b5('0x2d')]+'.\x20':'')+(_0x26b81b['howpublished']?howpublished2readable(_0x26b81b['howpublished'])+'.\x20':'');}}else{return'Format\x20'+_0x26b81b[_0x55b5('0x3d')]+_0x55b5('0x55');}}function convert(){toDiv[_0x55b5('0x56')]='';var _0x26f30a=fromArea[_0x55b5('0x7')];if(_0x26f30a==''){console['log'](_0x55b5('0x57'));return;}bibtex=new BibTex();bibtex[_0x55b5('0x58')]=_0x26f30a;bibtex[_0x55b5('0x59')]();console[_0x55b5('0x5a')](bibtex);for(var _0x411d39 in bibtex[_0x55b5('0x5b')]){var _0x195e1a=bibtex[_0x55b5('0x5b')][_0x411d39];var _0x51d208=format(_0x195e1a);toDiv[_0x55b5('0x56')]+=htmlify(_0x51d208)+_0x55b5('0x5c');}}function copyFunction(){var _0x161e77=document[_0x55b5('0x5d')]();window[_0x55b5('0x5e')]()[_0x55b5('0x5f')]();_0x161e77[_0x55b5('0x60')](toDiv);_0x161e77['setEndAfter'](toDiv);window[_0x55b5('0x5e')]()[_0x55b5('0x61')](_0x161e77);document[_0x55b5('0x62')](_0x55b5('0x63'));ctooltip[_0x55b5('0x56')]=_0x55b5('0x64');}function outFunc(){ctooltip[_0x55b5('0x56')]=_0x55b5('0x65');}
+// VARIABLES
+
+var fromArea = document.getElementById("from");
+var toDiv = document.getElementById("todiv");
+var formatDropdown = document.getElementById("format");
+var ctooltip = document.getElementById("mycTooltip");
+
+// JQUERY: If contents change, call convert function!
+
+$('#from').bind('input propertychange', function () {
+    convert()
+})
+
+// TEST BUTTONS
+
+function test() {
+
+    fromArea.value = `@inproceedings{azcona2019user2code2vec,
+author = {Azcona, David and Arora, Piyush and Hsiao, I-Han and Smeaton, Alan},
+title = {User2Code2Vec: Embeddings for Profiling Students Based on Distributional Representations of Source Code},
+booktitle = {Proceedings of the 9th International Conference on Learning Analytics \& Knowledge},
+series = {LAK19},
+year = {2019},
+isbn = {978-1-4503-6256-6},
+location = {Tempe, AZ, USA},
+pages = {86--95},
+numpages = {10},
+url = {http://doi.acm.org/10.1145/3303772.3303813},
+doi = {10.1145/3303772.3303813},
+acmid = {3303813},
+publisher = {ACM},
+address = {New York, NY, USA}
+}`;
+    convert();
+
+}
+
+function test2() {
+
+    fromArea.value = `@book{madigan1997brock,
+title={Brock biology of microorganisms},
+author={Madigan, Michael T and Martinko, John M and Parker, Jack and others},
+volume={11},
+year={1997},
+publisher={Prentice hall Upper Saddle River, NJ}
+}
+
+@article{tonouchi2007cutting,
+title={Cutting-edge terahertz technology},
+author={Tonouchi, Masayoshi},
+journal={Nature photonics},
+volume={1},
+number={2},
+pages={97},
+year={2007},
+publisher={Nature Publishing Group}
+}  
+
+@phdthesis{corrigan2018investigation,
+title={An Investigation Into Machine Learning Solutions Involving Time Series Across Different Problem Domains},
+author={Corrigan, Owen},
+year={2018},
+school={Dublin City University}
+}`
+    convert();
+
+}
+
+// HELPERS
+
+// Function to compile LaTeX special characters to HTML
+var htmlify = function (str) {
+    if (!str) { return ''; }
+    str = str.replace(/\\"\{a\}/g, '&auml;')
+        .replace(/\{\\aa\}/g, '&aring;')
+        .replace(/\\aa\{\}/g, '&aring;')
+        .replace(/\\"a/g, '&auml;')
+        .replace(/\\"\{o\}/g, '&ouml;')
+        .replace(/\\'e/g, '&eacute;')
+        .replace(/\\'\{e\}/g, '&eacute;')
+        .replace(/\\'a/g, '&aacute;')
+        .replace(/\\'A/g, '&Aacute;')
+        .replace(/\\"o/g, '&ouml;')
+        .replace(/\\"u/g, '&uuml;')
+        .replace(/\\ss\{\}/g, '&szlig;')
+        .replace(/\{/g, '')
+        .replace(/\}/g, '')
+        .replace(/\\&/g, '&')
+        .replace(/--/g, '&ndash;');
+    return str;
+};
+
+var uriencode = function (str) {
+    if (!str) { return ''; }
+    str = str.replace(/\\"\{a\}/g, '%C3%A4')
+        .replace(/\{\\aa\}/g, '%C3%A5')
+        .replace(/\\aa\{\}/g, '%C3%A5')
+        .replace(/\\"a/g, '%C3%A4')
+        .replace(/\\"\{o\}/g, '%C3%B6')
+        .replace(/\\'e/g, '%C3%A9')
+        .replace(/\\'\{e\}/g, '%C3%A9')
+        .replace(/\\'a/g, '%C3%A1')
+        .replace(/\\'A/g, '%C3%81')
+        .replace(/\\"o/g, '%C3%B6')
+        .replace(/\\"u/g, '%C3%BC')
+        .replace(/\\ss\{\}/g, '%C3%9F')
+        .replace(/\{/g, '')
+        .replace(/\}/g, '')
+        .replace(/\\&/g, '%26')
+        .replace(/--/g, '%E2%80%93');
+    return str;
+};
+
+// Function to get initials from authors
+function get_initials(name) {
+    initials = []
+    words = name.split('-')
+    for (var index = 0; index < words.length; index++) {
+        word = words[index];
+        initial = word[0];
+        initials.push(initial);
+    }
+    return initials
+}
+
+// Function to get authors in a particular format from citations
+function authors2html(authorData, vformat) {
+    var authorsStr = '';
+    var author;
+    if (!authorData) { return authorsStr; }
+    for (var index = 0; index < authorData.length; index++) {
+        if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
+        if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
+        if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
+            if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
+            else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
+        }
+        // Get author
+        author = authorData[index];
+        if (vformat == 'mla' || vformat == 'chicago') {
+            if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
+            else { authorsStr += author.first + ((author.first && author.last) ? ", " : "") + author.last; } // Rest: Piyush Arora
+        }
+        else {
+            initials = get_initials(author.first)
+            if (vformat == 'vancouver') { separator = ""; } // Azcona, D
+            else { separator = "."; } // Azcona, D.
+            authorsStr += author.last + ((author.first) ? ", " + initials.join(separator) + separator : "");
+        }
+    }
+    return htmlify(authorsStr);
+}
+
+function howpublished2readable(howpublished){
+    var howpublishedStr = '';
+    if (howpublished && howpublished.startsWith("\\url{") && howpublished.endsWith("}")) {
+        var uri = howpublished.split("\\url{")[1].split("}")[0];
+        howpublishedStr = '<a href="' + uri + '" target="_blank">' + uri + '</a>';
+    }
+    return htmlify(howpublishedStr);
+}
+
+// Function to format the citation based on the format selected
+function format(data) {
+
+    // Format value: MLA, APA, Chicago, Harvard, Vancouver
+    var formatValue = formatDropdown.options[formatDropdown.selectedIndex].value;
+
+    // Format authors
+    var authors = authors2html(data.author, formatValue);
+
+    // http://bib-it.sourceforge.net/help/fieldsAndEntryTypes.php#article
+    // ARTICLE
+    // An article from a journal or magazine.
+    // Required fields: author, title, journal, year.
+    // Optional fields: volume, number, pages, month, note.
+    if (data.entryType == "article") {
+        authors = ((authors) ? authors : "Authors are required!");
+        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var journal = ((data.journal) ? data.journal : "<strong style='color:red;'>Journal is required!</strong>")
+        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>")
+        if (formatValue == 'mla') {
+            return authors +
+                ". \"" + title + "\". " +
+                "<em>" + journal + "<\/em>" +
+                ((data.volume) ? " " + data.volume : "") +
+                ". " +
+                ((data.number) ? " " + data.number : "") + 
+                "(" + year + ")" +
+                ((data.pages) ? ": " + data.pages : "") +
+                ".";
+        }
+        else if (formatValue == 'apa') {
+            return authors +
+                " (" + year + "). " + 
+                title + 
+                "<em>" + journal + 
+                ((data.volume) ? ", " + data.volume : "") +
+                "<\/em>" +
+                ((data.number) ? "(" + data.number + ")" : "") + 
+                ((data.pages) ? ", " + data.pages : "") +
+                ".";
+        }
+        else if (formatValue == 'chicago') {
+            return authors +
+                ". \"" + title + "\"." + 
+                "<em>" + journal + "<\/em>" + 
+                ((data.volume) ? " " + data.volume : "") +
+                ((data.number) ? ", no." + data.number : "") + 
+                " (" + year + ")" + 
+                ((data.pages) ? ": " + data.pages : "") +
+                ".";
+        }
+        else if (formatValue == 'harvard') {
+            return authors +
+                " " + year + 
+                ". " + title + 
+                ". <em>" + journal + 
+                ((data.volume) ? ", " + data.volume : "") +
+                "<\/em>" + 
+                ((data.number) ? "(" + data.number + ")" : "") + 
+                ((data.pages) ? ", p." + data.pages : "") + 
+                ".";
+        }
+        else if (formatValue == 'vancouver') {
+            return authors +
+                ". \"" + title + "\". " +
+                journal + " " +
+                year +
+                ((data.volume) ? "; " + data.volume : "") +
+                ((data.number) ? "(" + data.number + ")" : "") +
+                ((data.pages) ? ":" + data.pages : "") + 
+                ".";
+        }
+    }
+    // IN PROCEEDINGS
+    // An article in a conference proceedings.
+    // Required fields: author, title, booktitle, year.
+    // Optional fields: editor, volume or number, series, pages, address, month, organization, publisher, note.
+    else if (data.entryType == "inproceedings") {
+        authors = ((authors) ? authors : "Authors are required!");
+        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var booktitle = ((data.booktitle) ? data.booktitle : "<strong style='color:red;'>Book title is required!</strong>");
+        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (formatValue == 'mla') {
+            return authors +
+                ". \"" + title + ".\" " + 
+                "<em>" + booktitle + "<\/em>. " + 
+                ((data.publisher) ? data.publisher + ", " : "")
+                year + 
+                ".";
+        }
+        else if (formatValue == 'apa') {
+            return authors + 
+                " (" + year + "). " + 
+                title + 
+                ". In <em>" + booktitle + "<\/em>" + 
+                ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+                "." +
+                ((data.publisher) ? " " + data.publisher + "." : "");
+        }
+        else if (formatValue == 'chicago') {
+            return authors + 
+                ". \"" + title + ".\" " + 
+                ". In <em>" + booktitle + "<\/em>" +
+                ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+                "." +
+                ((data.publisher) ? " " + data.publisher + ", ": "") +
+                year + ".";
+        }
+        else if (formatValue == 'harvard') {
+            return authors + 
+                " " + year + 
+                ". " + title + 
+                ". In <em>" + data.booktitle + "<\/em>" +
+                ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+                "." +
+                ((data.publisher) ? " " + data.publisher + ".": "");
+        }
+        else if (formatValue == 'vancouver') {
+            return authors + 
+                title + 
+                ". In " + booktitle + " " +
+                data.year + " " + 
+                ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
+                "." +
+                ((data.publisher) ? " " + data.publisher + ".": "");
+        }
+    }
+    // BOOK
+    // A book with an explicit publisher.
+    // Required fields: author or editor, title, publisher, year.
+    // Optional fields: volume or number, series, address, edition, month, note.
+    else if (data.entryType == "book") {
+        authors = ((authors) ? authors : "Authors are required!");
+        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var publisher = ((data.publisher) ? data.publisher : "<strong style='color:red;'>Publisher is required!</strong>");
+        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (authors == "Authors are required!") { 
+            authors = ((data.editor) ? data.editor : "<strong style='color:red;'>Author or Editor is required!</strong>");
+        }
+        if (formatValue == 'mla') {
+            return authors + 
+                ". <em>" + title + "<\/em>." + 
+                ((data.volume) ? " Vol. " + data.volume : "") +  
+                ". " + 
+                publisher + ", " + 
+                year + ".";
+        }
+        else if (formatValue == 'apa') {
+            return authors + 
+                " (" + year + "). <em>" + 
+                title + "<\/em>." +
+                ((data.volume) ? " (Vol. " + data.volume + ") " : " ") +  
+                publisher + ".";
+        }
+        else if (formatValue == 'chicago') {
+            return authors + 
+                ". <em>" + title + "<\/em>." +
+                ((data.volume) ? " Vol. " + data.volume + ". ": "") + 
+                publisher + ", " + 
+                year + ".";
+        }
+        else if (formatValue == 'harvard') {
+            return authors + " " +
+                year + ". " + 
+                ". <em>" + title + "<\/em>." + 
+                ((data.volume) ? " (Vol. " + data.volume + "). " : " ") +
+                publisher + ".";
+        }
+        else if (formatValue == 'vancouver') {
+            return authors + ". " + 
+                title + ". " + 
+                publisher + "; " + 
+                year + ".";
+        }
+    }
+    // PHD THESIS
+    // A Ph.D. thesis.
+    // Required fields: author, title, school, year.
+    // Optional fields: type, address, month, note.
+    else if (data.entryType == 'phdthesis') {
+        authors = ((authors) ? authors : "Authors are required!");
+        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var school = ((data.school) ? data.school : "<strong style='color:red;'>School is required!</strong>");
+        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (formatValue == 'mla') {
+            return authors + 
+                ". <em>" + title + "<\/em>" +
+                ". Diss." + school + 
+                ", " + year + ".";
+        }
+        else if (formatValue == 'apa') {
+            return authors + 
+                " (" + year + "). " + 
+                "<em>" + title + "<\/em>." +
+                " (Doctoral dissertation, " + school + ").";
+        }
+        else if (formatValue == 'chicago') {
+            return authors + 
+                ". \"" + title + ".\" " + 
+                "PhD diss., " + school + ", " + 
+                year + ". ";
+        }
+        else if (formatValue == 'harvard') {
+            return authors + 
+                ", " + year + 
+                ". <em>" + title + "<\/em>." + 
+                " (Doctoral dissertation, " + school + ").";
+        }
+        else if (formatValue == 'vancouver') {
+            return authors + 
+                ". <em>" + title + "<\/em>" + 
+                " (Doctoral dissertation, " + school + ").";
+        }
+    }
+    // MISC
+    // Use this type when nothing else fits. A warning will be issued if all optional fields are empty 
+    // (i.e., the entire entry is empty or has only ignored fields).
+    // Required fields: none.
+    // Optional fields: author, title, howpublished, month, year, note.
+    else if (data.entryType == 'misc') {
+        if (formatValue == 'mla' || formatValue == 'chicago') {
+            return ((authors) ? authors + ". ": "") + 
+                ((data.title) ? "\"" + data.title + ".\" ": "") +  
+                ((data.howpublished) ? howpublished2readable(data.howpublished) + ". ": "") +
+                ((data.year) ? " (" + data.year + "). ": "");
+        }
+        else if (formatValue == 'apa'|| formatValue == 'harvard') {
+            return ((authors) ? authors + ". ": "") + 
+                ((data.year) ? " (" + data.year + "). ": "") +
+                ((data.title) ? data.title + ". ": "") +  
+                ((data.howpublished) ? howpublished2readable(data.howpublished) + ". ": "");
+        }
+        else if (formatValue == 'vancouver') {
+            return ((authors) ? authors + ". ": "") + 
+                ((data.title) ? data.title + ". ": "") +  
+                ((data.howpublished) ? howpublished2readable(data.howpublished) + ". ": "");
+        }
+    }
+    // Otherwise
+    else {
+        return 'Format ' + data.entryType + ' not supported yet!'
+    }
+}
+
+// Function called to convert BibTeX to other format
+function convert() {
+
+    // Reset output
+    // toInput.value = '';
+    toDiv.innerHTML = '';
+
+    // Contents to format
+    var contents = fromArea.value;
+
+    // If empty, return nothing!
+    if (contents == '') {
+        console.log('Contents are empty!');
+        return;
+    }
+
+    // BIBTEX PARSER
+    bibtex = new BibTex();
+    bibtex.content = contents;
+    bibtex.parse();
+    console.log(bibtex);
+
+    // For each parsed citation
+    for (var i in bibtex.data) {
+
+        // Get citation
+        var citation = bibtex.data[i];
+
+        // Format citation
+        var output = format(citation);
+        
+        // Show
+        // toInput.value += htmlify(output) + "\n\n";
+        toDiv.innerHTML += htmlify(output) + "<br><br>";
+    }
+}
+
+// Copy text & tooltip!
+function copyFunction() {
+    
+    var div = document.createRange();
+    window.getSelection().removeAllRanges(); // clear current selection
+    div.setStartBefore(toDiv);
+    div.setEndAfter(toDiv) ;
+    window.getSelection().addRange(div);
+    document.execCommand("copy"); // Copy!
+    ctooltip.innerHTML = "Copied!"; // Tooltip!
+}
+
+// Tooltip after copying!
+function outFunc() {
+    ctooltip.innerHTML = "Copy to clipboard"; // Tooltip!
+}
