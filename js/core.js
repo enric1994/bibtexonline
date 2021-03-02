@@ -194,8 +194,8 @@ function format(data) {
             return authors +
                 " (" + year + "). " + 
                 title + 
-                "<em>" + journal + 
-                ((data.volume) ? ", " + data.volume : "") +
+                "<em>" + ". " + journal + 
+                ((data.volume) ? ", <em>" + data.volume : "") +
                 "<\/em>" +
                 ((data.number) ? "(" + data.number + ")" : "") + 
                 ((data.pages) ? ", " + data.pages : "") +
