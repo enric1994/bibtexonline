@@ -376,6 +376,58 @@ function format(data) {
                 " (Doctoral dissertation, " + school + ").";
         }
     }
+    // TECH REPORT
+    // A report published by a school or other institution, usually numbered within a series.
+    // Required fields: author, title, institution, year.
+    // Optional fields: type, number, address, month, note.
+    else if (data.entryType == 'techreport') {
+        authors = ((authors) ? authors : "Authors are required!");
+        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var institution = ((data.institution) ? data.institution : "<strong style='color:red;'>Institution is required!</strong>");
+        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (formatValue == 'mla') {
+            return authors +
+                ". <em>" + title + "<\/em>" +
+                ". " + institution + "," +
+                ((data.month) ? " " + data.month : "") +
+                " " + year +
+                ((data.howpublished) ? ", " + howpublished2readable(data.howpublished) + ".": ""); // MLA omits all other fields
+        }
+        else if (formatValue == 'apa') {
+            return authors +
+                " (" + year + "). " +
+                "<em>" + title + "<\/em>" +
+                " [White paper]. " + institution + "." +
+                ((data.howpublished) ? " " + howpublished2readable(data.howpublished): ""); // APA omits all other fields
+        }
+        else if (formatValue == 'chicago') {
+            return authors +
+                ". " + year + ". " +
+                "\"" + title + ".\"" +
+                " " + institution + "," +
+                ((data.month) ? " " + data.month : "") +
+                " " + year + "." +
+                ((data.howpublished) ? " " + howpublished2readable(data.howpublished): ""); // CMOS omits all other fields
+        }
+        else if (formatValue == 'harvard') {
+            var today = new Date(); // For access date
+            var date = today.getDate() + 
+                ' ' + today.toLocaleString('default', { month: 'short' }) + // Month name
+                ' ' + today.getFullYear(); 
+            return authors +
+                " (" + year + ") " +
+                title + "." +
+                ((data.howpublished) ? " Available at: " + howpublished2readable(data.howpublished): "") +
+                " (Accessed: " + date + ").";
+        }
+        else if (formatValue == 'vancouver') {
+            return authors +
+                ". " + title +
+                ". " + institution + 
+                ((data.month) ? "; " + data.year + " " + data.month + "." : "; " + data.year + ".") +
+                ((data.number) ? " Report No.:" + data.number : "");
+        }
+    }
     // MISC
     // Use this type when nothing else fits. A warning will be issued if all optional fields are empty 
     // (i.e., the entire entry is empty or has only ignored fields).
