@@ -115,11 +115,11 @@ var uriencode = function (str) {
 
 // Function to get initials from authors
 function get_initials(name) {
-    initials = []
-    words = name.split('-')
+    var initials = []
+    var words = name.split('-')
     for (var index = 0; index < words.length; index++) {
-        word = words[index];
-        initial = word[0];
+        var word = words[index];
+        var initial = word[0];
         initials.push(initial);
     }
     return initials
@@ -144,8 +144,8 @@ function authors2html(authorData, vformat) {
             else { authorsStr += author.first + ((author.first && author.last) ? ", " : "") + author.last; } // Rest: Piyush Arora
         }
         else {
-            initials = get_initials(author.first)
-            if (vformat == 'vancouver') { separator = ""; } // Azcona, D
+            var initials = get_initials(author.first)
+            if (vformat == 'vancouver') { var separator = ""; } // Azcona, D
             else { separator = "."; } // Azcona, D.
             authorsStr += author.last + ((author.first) ? ", " + initials.join(separator) + separator : "");
         }
@@ -160,6 +160,14 @@ function howpublished2readable(howpublished){
         howpublishedStr = '<a href="' + uri + '" target="_blank">' + uri + '</a>';
     }
     return htmlify(howpublishedStr);
+}
+
+// Function to format month from number to its corresponding name
+function getMonthName(month) {
+    var d = new Date();
+    d.setMonth(month-1);
+    var monthName = d.toLocaleString("default", { month: "short" });
+    return monthName;
 }
 
 // Function to format the citation based on the format selected
@@ -184,7 +192,7 @@ function format(data) {
         if (formatValue == 'mla') {
             return authors +
                 ". \"" + title + "\". " +
-                "<em>" + journal + "<\/em>" +
+                "<em>" + journal + "</em>" +
                 ((data.volume) ? " " + data.volume : "") +
                 ". " +
                 ((data.number) ? " " + data.number : "") + 
@@ -198,7 +206,7 @@ function format(data) {
                 title + 
                 "<em>" + ". " + journal + 
                 ((data.volume) ? ", <em>" + data.volume : "") +
-                "<\/em>" +
+                "</em>" +
                 ((data.number) ? "(" + data.number + ")" : "") + 
                 ((data.pages) ? ", " + data.pages : "") +
                 ".";
@@ -206,7 +214,7 @@ function format(data) {
         else if (formatValue == 'chicago') {
             return authors +
                 ". \"" + title + "\"." + 
-                "<em>" + journal + "<\/em>" + 
+                "<em>" + journal + "</em>" + 
                 ((data.volume) ? " " + data.volume : "") +
                 ((data.number) ? ", no." + data.number : "") + 
                 " (" + year + ")" + 
@@ -219,7 +227,7 @@ function format(data) {
                 ". " + title + 
                 ". <em>" + journal + 
                 ((data.volume) ? ", " + data.volume : "") +
-                "<\/em>" + 
+                "</em>" + 
                 ((data.number) ? "(" + data.number + ")" : "") + 
                 ((data.pages) ? ", p." + data.pages : "") + 
                 ".";
@@ -241,14 +249,14 @@ function format(data) {
     // Optional fields: editor, volume or number, series, pages, address, month, organization, publisher, note.
     else if (data.entryType == "inproceedings") {
         authors = ((authors) ? authors : "Authors are required!");
-        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
         var booktitle = ((data.booktitle) ? data.booktitle : "<strong style='color:red;'>Book title is required!</strong>");
-        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
         if (formatValue == 'mla') {
             return authors +
                 ". \"" + title + ".\" " + 
-                "<em>" + booktitle + "<\/em>. " + 
-                ((data.publisher) ? data.publisher + ", " : "")
+                "<em>" + booktitle + "</em>. " + 
+                ((data.publisher) ? data.publisher + ", " : "") +
                 year + 
                 ".";
         }
@@ -256,7 +264,7 @@ function format(data) {
             return authors + 
                 " (" + year + "). " + 
                 title + 
-                ". In <em>" + booktitle + "<\/em>" + 
+                ". In <em>" + booktitle + "</em>" + 
                 ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
                 "." +
                 ((data.publisher) ? " " + data.publisher + "." : "");
@@ -264,7 +272,7 @@ function format(data) {
         else if (formatValue == 'chicago') {
             return authors + 
                 ". \"" + title + ".\" " + 
-                ". In <em>" + booktitle + "<\/em>" +
+                ". In <em>" + booktitle + "</em>" +
                 ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
                 "." +
                 ((data.publisher) ? " " + data.publisher + ", ": "") +
@@ -274,7 +282,7 @@ function format(data) {
             return authors + 
                 " " + year + 
                 ". " + title + 
-                ". In <em>" + data.booktitle + "<\/em>" +
+                ". In <em>" + data.booktitle + "</em>" +
                 ((data.pages) ? " (pp. " + data.pages + ")" : "") + 
                 "." +
                 ((data.publisher) ? " " + data.publisher + ".": "");
@@ -295,15 +303,15 @@ function format(data) {
     // Optional fields: volume or number, series, address, edition, month, note.
     else if (data.entryType == "book") {
         authors = ((authors) ? authors : "Authors are required!");
-        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
         var publisher = ((data.publisher) ? data.publisher : "<strong style='color:red;'>Publisher is required!</strong>");
-        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
         if (authors == "Authors are required!") { 
             authors = ((data.editor) ? data.editor : "<strong style='color:red;'>Author or Editor is required!</strong>");
         }
         if (formatValue == 'mla') {
             return authors + 
-                ". <em>" + title + "<\/em>." + 
+                ". <em>" + title + "</em>." + 
                 ((data.volume) ? " Vol. " + data.volume : "") +  
                 ". " + 
                 publisher + ", " + 
@@ -312,13 +320,13 @@ function format(data) {
         else if (formatValue == 'apa') {
             return authors + 
                 " (" + year + "). <em>" + 
-                title + "<\/em>." +
+                title + "</em>." +
                 ((data.volume) ? " (Vol. " + data.volume + ") " : " ") +  
                 publisher + ".";
         }
         else if (formatValue == 'chicago') {
             return authors + 
-                ". <em>" + title + "<\/em>." +
+                ". <em>" + title + "</em>." +
                 ((data.volume) ? " Vol. " + data.volume + ". ": "") + 
                 publisher + ", " + 
                 year + ".";
@@ -326,7 +334,7 @@ function format(data) {
         else if (formatValue == 'harvard') {
             return authors + " " +
                 year + ". " + 
-                ". <em>" + title + "<\/em>." + 
+                ". <em>" + title + "</em>." + 
                 ((data.volume) ? " (Vol. " + data.volume + "). " : " ") +
                 publisher + ".";
         }
@@ -343,19 +351,19 @@ function format(data) {
     // Optional fields: type, address, month, note.
     else if (data.entryType == 'phdthesis') {
         authors = ((authors) ? authors : "Authors are required!");
-        var title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
         var school = ((data.school) ? data.school : "<strong style='color:red;'>School is required!</strong>");
-        var year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
         if (formatValue == 'mla') {
             return authors + 
-                ". <em>" + title + "<\/em>" +
+                ". <em>" + title + "</em>" +
                 ". Diss." + school + 
                 ", " + year + ".";
         }
         else if (formatValue == 'apa') {
             return authors + 
                 " (" + year + "). " + 
-                "<em>" + title + "<\/em>." +
+                "<em>" + title + "</em>." +
                 " (Doctoral dissertation, " + school + ").";
         }
         else if (formatValue == 'chicago') {
@@ -367,13 +375,65 @@ function format(data) {
         else if (formatValue == 'harvard') {
             return authors + 
                 ", " + year + 
-                ". <em>" + title + "<\/em>." + 
+                ". <em>" + title + "</em>." + 
                 " (Doctoral dissertation, " + school + ").";
         }
         else if (formatValue == 'vancouver') {
             return authors + 
-                ". <em>" + title + "<\/em>" + 
+                ". <em>" + title + "</em>" + 
                 " (Doctoral dissertation, " + school + ").";
+        }
+    }
+    // TECH REPORT
+    // A report published by a school or other institution, usually numbered within a series.
+    // Required fields: author, title, institution, year.
+    // Optional fields: type, number, address, month, note.
+    else if (data.entryType == 'techreport') {
+        authors = ((authors) ? authors : "Authors are required!");
+        title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var institution = ((data.institution) ? data.institution : "<strong style='color:red;'>Institution is required!</strong>");
+        year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (formatValue == 'mla') {
+            return authors +
+                ". <em>" + title + "</em>" +
+                ". " + institution + "," +
+                ((data.month) ? " " + getMonthName(data.month) : "") +
+                " " + year +
+                ((data.howpublished) ? ", " + howpublished2readable(data.howpublished) + ".": ""); // MLA omits all other fields
+        }
+        else if (formatValue == 'apa') {
+            return authors +
+                " (" + year + "). " +
+                "<em>" + title + "</em>" +
+                " [White paper]. " + institution + "." +
+                ((data.howpublished) ? " " + howpublished2readable(data.howpublished): ""); // APA omits all other fields
+        }
+        else if (formatValue == 'chicago') {
+            return authors +
+                ". " + year + ". " +
+                "\"" + title + ".\"" +
+                " " + institution + "," +
+                ((data.month) ? " " + getMonthName(data.month) : "") +
+                " " + year + "." +
+                ((data.howpublished) ? " " + howpublished2readable(data.howpublished): ""); // CMOS omits all other fields
+        }
+        else if (formatValue == 'harvard') {
+            var today = new Date(); // For access date
+            var date = today.getDate() + 
+                ' ' + today.toLocaleString('default', { month: 'short' }) + // Month name
+                ' ' + today.getFullYear(); 
+            return authors +
+                " (" + year + ") " +
+                title + "." +
+                ((data.howpublished) ? " Available at: " + howpublished2readable(data.howpublished): "") +
+                " (Accessed: " + date + ").";
+        }
+        else if (formatValue == 'vancouver') {
+            return authors +
+                ". " + title +
+                ". " + institution + 
+                ((data.month) ? "; " + data.year + " " + getMonthName(data.month) + "." : "; " + data.year + ".") +
+                ((data.number) ? " Report No.:" + data.number : "");
         }
     }
     // MISC
