@@ -476,6 +476,9 @@ function convert() {
     // Contents to format
     var contents = fromArea.value;
 
+    // Remove breaks and empty lines
+    contents=contents.replace(/(\r\n|\n|\r)/gm, "");
+
     // If empty, return nothing!
     if (contents == '') {
         console.log('Contents are empty!');
@@ -486,7 +489,6 @@ function convert() {
     bibtex = new BibTex();
     bibtex.content = contents;
     bibtex.parse();
-    console.log(bibtex);
 
     // For each parsed citation
     for (var i in bibtex.data) {
