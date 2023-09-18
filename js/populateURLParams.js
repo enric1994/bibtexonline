@@ -14,7 +14,7 @@ parseUrlParam(bibtexStr, formatStr);
 function parseUrlParam(bibtexStr, formatStr) {
   /**
    * bibtex: string with "",
-   * format?: optional string 'apa' | 'mla' | 'chicago' | 'harvard' | 'vancouver'
+   * format?: optional string 'apa' | 'mla' | 'chicago' | 'harvard' | 'vancouver' | 'ieee'
    */
 
   if (!bibtexStr) return;
@@ -51,7 +51,7 @@ function hasQuotesOnBothEnds(str) {
 function formatIsValid(str) {
   if (str) {
     if (
-      ["apa", "mla", "chicago", "harvard", "vancouver"].includes(
+      ["apa", "mla", "chicago", "harvard", "vancouver", "ieee"].includes(
         str.toLowerCase()
       )
     ) {

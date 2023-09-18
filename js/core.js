@@ -125,26 +125,32 @@ function get_initials(name) {
     return initials
 }
 
-// Function to get authors in a particular format from citations
 function authors2html(authorData, vformat) {
     var authorsStr = '';
     var author;
     if (!authorData) { return authorsStr; }
     for (var index = 0; index < authorData.length; index++) {
-        if (vformat == 'mla' && index > 0) { authorsStr += " et al"; break; } // MLA: Azcona, David, et al. 
+        if (vformat == 'ieee' && authorData.length > 3) {
+            authorsStr += authorData[0].last + ", " + get_initials(authorData[0].first)[0] + "., et al";
+            break; // IEEE: Azcona, D., et al.
+        }
         if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
-        if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&'' or 'and' if needed
+
+        if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&' or 'and' if needed
             if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
             else if (vformat == 'chicago' || vformat == 'harvard') { authorsStr += "and "; } // and Alan Smeaton
         }
         // Get author
         author = authorData[index];
-        if (vformat == 'mla' || vformat == 'chicago') {
+        var initials = get_initials(author.first);
+        if (vformat == 'ieee') {
+            authorsStr += initials[0] + ". " + author.last; // J. Murray
+        }
+        else if (vformat == 'mla' || vformat == 'chicago') {
             if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
             else { authorsStr += author.first + ((author.first && author.last) ? ", " : "") + author.last; } // Rest: Piyush Arora
         }
         else {
-            var initials = get_initials(author.first)
             if (vformat == 'vancouver') { var separator = ""; } // Azcona, D
             else { separator = "."; } // Azcona, D.
             authorsStr += author.last + ((author.first) ? ", " + initials.join(separator) + separator : "");
@@ -173,7 +179,7 @@ function getMonthName(month) {
 // Function to format the citation based on the format selected
 function format(data) {
 
-    // Format value: MLA, APA, Chicago, Harvard, Vancouver
+    // Format value: MLA, APA, Chicago, Harvard, Vancouver, IEEE
     var formatValue = formatDropdown.options[formatDropdown.selectedIndex].value;
 
     // Format authors
@@ -242,6 +248,17 @@ function format(data) {
                 ((data.pages) ? ":" + data.pages : "") + 
                 ".";
         }
+        else if (formatValue == 'ieee') {
+            return authors +
+                ". \"" + title + ",\" in " +
+                "<em>" + journal + "</em>" +
+                ((data.volume) ? ", vol. " + data.volume : "") +
+                ((data.number) ? ", no. " + data.number : "") +
+                ", " +
+                ((data.pages) ? "pp. " + data.pages + ", " : "") +
+                year +
+                ".";
+        }
     }
     // IN PROCEEDINGS
     // An article in a conference proceedings.
@@ -296,6 +313,15 @@ function format(data) {
                 "." +
                 ((data.publisher) ? " " + data.publisher + ".": "");
         }
+        else if (formatValue == 'ieee') {
+            return authors +
+                ", \"" + title + ",\" in " +
+                "<em>" + booktitle + "</em>" +
+                ", " +
+                year +
+                ((data.pages) ? ", pp. " + data.pages : "") +
+                ".";
+        }
     }
     // BOOK
     // A book with an explicit publisher.
@@ -344,6 +370,15 @@ function format(data) {
                 publisher + "; " + 
                 year + ".";
         }
+        else if (formatValue == 'ieee') {
+            return authors +
+                ", <em>" + title + "</em>" +
+                ". " +
+                publisher +
+                ", " +
+                year +
+                ".";
+        }
     }
     // PHD THESIS
     // A Ph.D. thesis.
@@ -382,6 +417,13 @@ function format(data) {
             return authors + 
                 ". <em>" + title + "</em>" + 
                 " (Doctoral dissertation, " + school + ").";
+        }
+        else if (formatValue == 'ieee') {
+            return authors + 
+                ", \"" + title + ",\" " +
+                "Ph.D. dissertation, " + 
+                school + ", " +
+                year + ".";
         }
     }
     // TECH REPORT
@@ -435,6 +477,14 @@ function format(data) {
                 ((data.month) ? "; " + data.year + " " + getMonthName(data.month) + "." : "; " + data.year + ".") +
                 ((data.number) ? " Report No.:" + data.number : "");
         }
+        else if (formatValue == 'ieee') {
+            return authors +
+                ", \"" + title + ",\" " +
+                institution +
+                ", Tech. Rep., " +
+                year +
+                ".";
+        }
     }
     // MISC
     // Use this type when nothing else fits. A warning will be issued if all optional fields are empty 
@@ -458,6 +508,12 @@ function format(data) {
             return ((authors) ? authors + ". ": "") + 
                 ((data.title) ? data.title + ". ": "") +  
                 ((data.howpublished) ? howpublished2readable(data.howpublished) + ". ": "");
+        }
+        else if (formatValue == 'ieee') {
+            return ((authors) ? authors + ", ": "") + 
+                ((data.title) ? "\"" + data.title + ",\" ": "") +
+                ((data.howpublished) ? howpublished2readable(data.howpublished) + ", ": "") +
+                ((data.year) ? " " + data.year + ".": "");
         }
     }
     // Otherwise

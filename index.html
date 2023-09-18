@@ -2,15 +2,6 @@
 <html lang="en">
 
 <head>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149266625-1"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
-
-		gtag('config', 'UA-149266625-1');
-	</script>
 
 	<title>BibTeX Online Converter</title>
 	<meta charset="UTF-8">
@@ -71,6 +62,7 @@
 						<select class="selection-2" id="format" onchange="convert()">
 							<option value="apa">APA</option>
 							<option value="mla">MLA</option>
+							<option value="ieee">IEEE</option>
 							<option value="chicago">Chicago</option>
 							<option value="harvard">Harvard</option>
 							<option value="vancouver">Vancouver</option>
@@ -119,13 +111,6 @@
 			dropdownParent: $('#dropDownSelect1')
 		});
 	</script>
-
-	<script type="text/javascript" id="cookieinfo" src="js/cookieinfo.min.js"
-		data-message="Cookies🍪? We eat them, but we also use them to track visits to our website, we store no personal details. By continuing to visit this site you agree to our use of cookies. "
-		data-bg="#c4c4c4" data-fg="#000000" data-link="#000000"
-		data-moreinfo="https://en.wikipedia.org/wiki/HTTP_cookie" data-divlinkbg="#595959"
-		data-cookie="CookieInfoScript" data-close-text="🍪👍" data-font-family="Poppins-Medium">
-		</script>
 
 	<a class="github-fork-ribbon" href="https://github.com/enric1994/bibtexonline" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 </body>
