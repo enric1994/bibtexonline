@@ -516,6 +516,73 @@ function format(data) {
                 ((data.year) ? " " + data.year + ".": "");
         }
     }
+    // SOFTWARE
+    // A piece of software or computer program
+    // Required fields: author, title, year.
+    // Optional fields: url, version, license, publisher, organization.
+    else if (data.entryType == 'software') {
+        authors = ((authors) ? authors : "Authors are required!");
+        title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (formatValue == 'mla') {
+            return authors +
+                ". <em>" + title + "</em>" +
+                ((data.version) ? " (Version " + data.version + ")": "") +
+                ". " +
+                ((data.publisher) ? data.publisher + ", " : "") +
+                year +
+                ((data.url) ? ". " + data.url : "") +
+                ".";
+        }
+        else if (formatValue == 'apa') {
+            return authors +
+                " (" + year + "). " +
+                "<em>" + title + "</em>" +
+                ((data.version) ? " (Version " + data.version + ")": "") +
+                " [Computer software]." +
+                ((data.publisher) ? " " + data.publisher + "." : "") +
+                ((data.url) ? " " + data.url : "");
+        }
+        else if (formatValue == 'chicago') {
+            return authors +
+                ". <em>" + title + "</em>" +
+                ((data.version) ? " (Version " + data.version + ")": "") +
+                ". " +
+                ((data.publisher) ? data.publisher + ", " : "") +
+                year +
+                ((data.url) ? ". " + data.url : "") +
+                ".";
+        }
+        else if (formatValue == 'harvard') {
+            return authors +
+                " " + year +
+                ". <em>" + title + "</em>" +
+                ((data.version) ? " (Version " + data.version + ")": "") +
+                " [Computer software]." +
+                ((data.publisher) ? " " + data.publisher + "." : "") +
+                ((data.url) ? " Available at: " + data.url + " " : "");
+        }
+        else if (formatValue == 'vancouver') {
+            return authors +
+                ". " + title +
+                ((data.version) ? " Version " + data.version : "") +
+                " [software]." +
+                ((data.publisher) ? " " + data.publisher + "; " : "") +
+                year +
+                ((data.url) ? ". Available from: " + data.url : "") +
+                ".";
+        }
+        else if (formatValue == 'ieee') {
+            return authors +
+                ", <em>" + title + "</em>" +
+                ((data.version) ? ", Version " + data.version : "") +
+                ". " +
+                ((data.publisher) ? data.publisher + ", " : "") +
+                year +
+                ((data.url) ? ". [Online]. Available: " + data.url : "") +
+                ".";
+        }
+    }
     // Otherwise
     else {
         return 'Format ' + data.entryType + ' not supported yet!'
@@ -550,35 +617,109 @@ function convert() {
     }
 
     // BIBTEX PARSER
-    bibtex = new BibTex();
-    bibtex.content = contents;
-    bibtex.parse();
-
-    // For each parsed citation
-    for (var i in bibtex.data) {
-
-        // Get citation
-        var citation = bibtex.data[i];
-
-        // Format citation
-        var output = format(citation);
+    try {
+        bibtex = new BibTex();
+        bibtex.content = contents;
+        var parseResult = bibtex.parse();
         
-        // Show
-        // toInput.value += htmlify(output) + "\n\n";
-        toDiv.innerHTML += htmlify(output) + "<br><br>";
+        // Check if parsing failed
+        if (parseResult !== true) {
+            toDiv.innerHTML = '<span style="color:red;">Error parsing BibTeX: ' + parseResult.message + '</span>';
+            console.error('BibTeX parsing error:', parseResult);
+            return;
+        }
+        
+        // Check if there are no entries parsed
+        if (!bibtex.data || bibtex.data.length === 0) {
+            toDiv.innerHTML = '<span style="color:red;">No valid BibTeX entries found. Please check your input.</span>';
+            console.warn('No BibTeX entries parsed');
+            return;
+        }
+        
+        // Display warnings if any
+        if (bibtex.hasWarning()) {
+            var warningHtml = '<div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 10px; margin-bottom: 15px; border-radius: 5px;">';
+            warningHtml += '<strong>⚠️ Warnings:</strong><ul style="margin: 5px 0; padding-left: 20px;">';
+            for (var w = 0; w < bibtex.warnings.length; w++) {
+                var warning = bibtex.warnings[w];
+                warningHtml += '<li>' + warning.warning;
+                if (warning.entry) {
+                    warningHtml += ' - Entry: ' + htmlify(warning.entry.substring(0, 50)) + (warning.entry.length > 50 ? '...' : '');
+                }
+                warningHtml += '</li>';
+            }
+            warningHtml += '</ul></div>';
+            toDiv.innerHTML += warningHtml;
+        }
+
+        // For each parsed citation
+        for (var i in bibtex.data) {
+
+            // Get citation
+            var citation = bibtex.data[i];
+
+            // Format citation
+            var output = format(citation);
+            
+            // Show
+            // toInput.value += htmlify(output) + "\n\n";
+            toDiv.innerHTML += htmlify(output) + "<br><br>";
+        }
+    } catch (error) {
+        toDiv.innerHTML = '<span style="color:red;">Error: Failed to convert BibTeX. ' + error.message + '</span>';
+        console.error('Conversion error:', error);
     }
 }
 
 // Copy text & tooltip!
 function copyFunction() {
     
-    var div = document.createRange();
-    window.getSelection().removeAllRanges(); // clear current selection
-    div.setStartBefore(toDiv);
-    div.setEndAfter(toDiv) ;
-    window.getSelection().addRange(div);
-    document.execCommand("copy"); // Copy!
-    ctooltip.innerHTML = "Copied!"; // Tooltip!
+    // Check if there's any content to copy
+    var content = toDiv.innerText || toDiv.textContent;
+    content = content.trim();
+    
+    if (!content || content === '') {
+        ctooltip.innerHTML = "Nothing to copy!";
+        ctooltip.style.backgroundColor = "#f44336"; // Red background
+        setTimeout(function() {
+            ctooltip.innerHTML = "Copy to clipboard";
+            ctooltip.style.backgroundColor = ""; // Reset to default
+        }, 2000);
+        return;
+    }
+    
+    // Check if the content is an error message
+    if (content.includes('Error') || content.includes('No valid BibTeX')) {
+        ctooltip.innerHTML = "Cannot copy error message!";
+        ctooltip.style.backgroundColor = "#ff9800"; // Orange background
+        setTimeout(function() {
+            ctooltip.innerHTML = "Copy to clipboard";
+            ctooltip.style.backgroundColor = ""; // Reset to default
+        }, 2000);
+        return;
+    }
+    
+    try {
+        var div = document.createRange();
+        window.getSelection().removeAllRanges(); // clear current selection
+        div.setStartBefore(toDiv);
+        div.setEndAfter(toDiv);
+        window.getSelection().addRange(div);
+        document.execCommand("copy"); // Copy!
+        ctooltip.innerHTML = "Copied!"; // Tooltip!
+        ctooltip.style.backgroundColor = "#4CAF50"; // Green background
+        setTimeout(function() {
+            ctooltip.style.backgroundColor = ""; // Reset to default
+        }, 1000);
+    } catch (error) {
+        console.error('Copy failed:', error);
+        ctooltip.innerHTML = "Copy failed!";
+        ctooltip.style.backgroundColor = "#f44336"; // Red background
+        setTimeout(function() {
+            ctooltip.innerHTML = "Copy to clipboard";
+            ctooltip.style.backgroundColor = ""; // Reset to default
+        }, 2000);
+    }
 }
 
 // Tooltip after copying!

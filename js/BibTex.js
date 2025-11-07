@@ -874,6 +874,7 @@ function BibTex(options)
 		'misc',
 		'phdthesis',
 		'proceedings',
+		'software',
 		'techreport',
 		'unpublished'
 	);
@@ -1587,6 +1588,7 @@ BibTex.prototype = {
     '_generateWarning': function(type, entry, wholeentry)
     {
     	if ( typeof wholeentry == 'undefined' ) wholeentry = '';
+        var warning = {};
         warning['warning']    = type;
         warning['entry']      = entry;
         warning['wholeentry'] = wholeentry;
