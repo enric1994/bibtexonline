@@ -66,6 +66,41 @@ school={Dublin City University}
 
 }
 
+function test3() {
+    fromArea.value = `@phdthesis{fielding2000architectural,
+  author = {Fielding, Roy Thomas},
+  title = {Architectural Styles and the Design of Network-based Software Architectures},
+  school = {University of California, Irvine},
+  year = {2000},
+  address = {Irvine, CA, USA}
+}
+  
+@techreport{page1999pagerank,
+  author = {Page, Lawrence and Brin, Sergey and Motwani, Rajeev and Winograd, Terry},
+  title = {The PageRank Citation Ranking: Bringing Order to the Web},
+  institution = {Stanford InfoLab},
+  year = {1999},
+  number = {1999-66}
+}
+  
+@misc{mdn2024css,
+  author = {{MDN Web Docs}},
+  title = {CSS: Cascading Style Sheets},
+  year = {2024},
+  url = {https://developer.mozilla.org/en-US/docs/Web/CSS},
+}
+  
+@software{python312,
+  author = {{Python Software Foundation}},
+  title = {Python Language Reference},
+  version = {3.12.3},
+  year = {2024},
+  url = {https://www.python.org/},
+  address = {Wilmington, DE}
+}`
+    convert();
+}
+
 // HELPERS
 
 // Function to compile LaTeX special characters to HTML
@@ -133,8 +168,9 @@ function authors2html(authorData, vformat) {
         if (vformat == 'ieee' && authorData.length > 3) {
             authorsStr += authorData[0].last + ", " + get_initials(authorData[0].first)[0] + "., et al";
             break; // IEEE: Azcona, D., et al.
-        }
-        if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
+        } 
+        if (index > 0 && vformat == 'abnt') { authorsStr += "; "} // For more than one author using ABNT, separate them with a semicolon
+        else if (index > 0) { authorsStr += ", "; } // For more than one author, separate them with a comma
 
         if (index > 0 && index == authorData.length - 1) { // Before adding the last author, add '&' or 'and' if needed
             if (vformat == 'apa') { authorsStr += "& "; } // & Smeaton, A.
@@ -150,12 +186,18 @@ function authors2html(authorData, vformat) {
             if (index == 0) { authorsStr += author.last + ", " + author.first; } // First: Azcona, David
             else { authorsStr += author.first + ((author.first && author.last) ? ", " : "") + author.last; } // Rest: Piyush Arora
         }
+        else if (vformat == 'abnt') {
+            var separator = "."
+            if (index == 0) {authorsStr += (author.last).toUpperCase() + ", " + initials.join(".");} // First: AZCONA, D.
+            else {authorsStr += (author.last).toUpperCase() + ((author.first) ? ", " + initials.join(separator) + separator : "");} // Rest: ARORA, P.
+        }   
         else {
             if (vformat == 'vancouver') { var separator = ""; } // Azcona, D
             else { separator = "."; } // Azcona, D.
             authorsStr += author.last + ((author.first) ? ", " + initials.join(separator) + separator : "");
         }
     }
+    console.log(authorsStr)
     return htmlify(authorsStr);
 }
 
@@ -166,6 +208,11 @@ function howpublished2readable(howpublished){
         howpublishedStr = '<a href="' + uri + '" target="_blank">' + uri + '</a>';
     }
     return htmlify(howpublishedStr);
+}
+
+function convertUrl(url){
+    var urlStr = '<a href="' + url + '" target="_blank" style="text-decoration: none; color: inherit;">' + url + '</a>';
+    return htmlify(urlStr);
 }
 
 // Function to format month from number to its corresponding name
@@ -184,6 +231,14 @@ function format(data) {
 
     // Format authors
     var authors = authors2html(data.author, formatValue);
+
+    // Format date: abnt the months are different.
+    var today = new Date()
+    const months = [
+    "jan", "fev", "mar", "abr", "maio", "jun", 
+    "jul", "ago", "set", "out", "nov", "dez"
+    ];
+    var month = months[today.getMonth()]
 
     // http://bib-it.sourceforge.net/help/fieldsAndEntryTypes.php#article
     // ARTICLE
@@ -215,6 +270,16 @@ function format(data) {
                 "</em>" +
                 ((data.number) ? "(" + data.number + ")" : "") + 
                 ((data.pages) ? ", " + data.pages : "") +
+                ".";
+        }
+        else if(formatValue == 'abnt'){
+            return authors +
+                ". " + title + ". " + 
+                "<b>" + journal + "</b>" + 
+                ((data.volume) ? ", v." + data.volume : "") +
+                ((data.number) ? ", n." + data.number : "") + 
+                ((data.pages) ? ", p. " + data.pages : "") +
+                ", " + year +
                 ".";
         }
         else if (formatValue == 'chicago') {
@@ -286,6 +351,21 @@ function format(data) {
                 "." +
                 ((data.publisher) ? " " + data.publisher + "." : "");
         }
+        else if(formatValue == 'abnt'){
+            return authors + 
+                " " + title + 
+                ". <b>In: </b> <em>" + (booktitle).toUpperCase() + "</em>" +
+                ", " + year + ", " +
+                ((data.location) ? data.location + ". " : "") + 
+                "<b> Anais [..]. </b>" +
+                ((data.address) ? data.address + ": " : "") + 
+                ((data.publisher) ? " " + data.publisher + ", ": "") +
+                year + ". " +
+                ((data.pages) ? "p. " + data.pages : "") + 
+                ". " +
+                ((data.url) ? "Disponível em: " + convertUrl(data.url) + ". " : "") +
+                "Acesso em: " + today.getDate() + " " + month + ". "+ today.getFullYear() + ".";
+        }
         else if (formatValue == 'chicago') {
             return authors + 
                 ". \"" + title + ".\" " + 
@@ -350,6 +430,13 @@ function format(data) {
                 ((data.volume) ? " (Vol. " + data.volume + ") " : " ") +  
                 publisher + ".";
         }
+        else if (formatValue == 'abnt') {
+            return authors + 
+                ". <b>" + title + "</b>. " +
+                ((data.volume) ?  data.volume + ". ed ": "") + 
+                publisher + ", " + 
+                year + ".";
+        }
         else if (formatValue == 'chicago') {
             return authors + 
                 ". <em>" + title + "</em>." +
@@ -401,6 +488,13 @@ function format(data) {
                 "<em>" + title + "</em>." +
                 " (Doctoral dissertation, " + school + ").";
         }
+        else if (formatValue == 'abnt') {
+            return authors + 
+                ". <b>" + title + "</b>. " + 
+                year + ". " + 
+                "Tese (Tese de Doutorado) - " + school + ", " + 
+                year + ". ";
+        }
         else if (formatValue == 'chicago') {
             return authors + 
                 ". \"" + title + ".\" " + 
@@ -449,6 +543,13 @@ function format(data) {
                 "<em>" + title + "</em>" +
                 " [White paper]. " + institution + "." +
                 ((data.howpublished) ? " " + howpublished2readable(data.howpublished): ""); // APA omits all other fields
+        }
+        else if (formatValue == 'abnt') {
+            return authors +
+                "<b> " + title + "</b>." +
+                " " + year + ". " +
+                ((data.url) ? " Disponível em: " + convertUrl(data.url): "") +
+                "Acesso em: " + today.getDate() + " " + month + ". "+ today.getFullYear() + ".";
         }
         else if (formatValue == 'chicago') {
             return authors +
@@ -504,6 +605,13 @@ function format(data) {
                 ((data.title) ? data.title + ". ": "") +  
                 ((data.howpublished) ? howpublished2readable(data.howpublished) + ". ": "");
         }
+        else if (formatValue == 'abnt') {
+            return ((authors) ? authors + ". ": "") +
+                ((data.title) ? "<b> " + data.title + "</b>.": "") + 
+                ((data.year) ? " " + data.year + ". " : "") +
+                ((data.url) ? "Disponível em: " + convertUrl(data.url) + ". ": "") +
+                "Acesso em: " + today.getDate() + " " + month + ". "+ today.getFullYear() + ".";
+        }
         else if (formatValue == 'vancouver') {
             return ((authors) ? authors + ". ": "") + 
                 ((data.title) ? data.title + ". ": "") +  
@@ -542,6 +650,15 @@ function format(data) {
                 " [Computer software]." +
                 ((data.publisher) ? " " + data.publisher + "." : "") +
                 ((data.url) ? " " + data.url : "");
+        }
+        else if (formatValue == 'abnt') {
+            return authors +
+                ". <b> " + title + "</b>: " +
+                ((data.version) ? "Versão " + data.version: "") +
+                ". " +
+                ((data.publisher) ? data.publisher + ", " : "") +
+                year + ". " +
+                ((data.url) ? " Disponível em: " + convertUrl(data.url): "");
         }
         else if (formatValue == 'chicago') {
             return authors +
