@@ -67,14 +67,7 @@ school={Dublin City University}
 }
 
 function test3() {
-    fromArea.value = `@phdthesis{fielding2000architectural,
-  author = {Fielding, Roy Thomas},
-  title = {Architectural Styles and the Design of Network-based Software Architectures},
-  school = {University of California, Irvine},
-  year = {2000},
-  address = {Irvine, CA, USA}
-}
-  
+    fromArea.value = ` 
 @techreport{page1999pagerank,
   author = {Page, Lawrence and Brin, Sergey and Motwani, Rajeev and Winograd, Terry},
   title = {The PageRank Citation Ranking: Bringing Order to the Web},
@@ -97,7 +90,16 @@ function test3() {
   year = {2024},
   url = {https://www.python.org/},
   address = {Wilmington, DE}
-}`
+}
+
+@masterthesis{li2024forecasting,
+	title={Forecasting US GDP from 1960 to 2023 using PCA},
+	author={Li, Katherine},
+	year={2024},
+	school={UCLA},
+	url={http://dissertations.umi.com/ucla:23601}
+}
+`
     convert();
 }
 
@@ -197,7 +199,6 @@ function authors2html(authorData, vformat) {
             authorsStr += author.last + ((author.first) ? ", " + initials.join(separator) + separator : "");
         }
     }
-    console.log(authorsStr)
     return htmlify(authorsStr);
 }
 
@@ -467,6 +468,23 @@ function format(data) {
                 ".";
         }
     }
+    // MASTER THESIS
+    // A Master's thesis.
+    // Required fields: author, title, school, year.
+    else if (data.entryType == 'masterthesis'){
+        authors = ((authors) ? authors : "Authors are required!");
+        title = ((data.title) ? data.title : "<strong style='color:red;'>Title is required!</strong>");
+        var school = ((data.school) ? data.school : "<strong style='color:red;'>School is required!</strong>");
+        year = ((data.year) ? data.year : "<strong style='color:red;'>Year is required!</strong>");
+        if (formatValue == 'abnt') {
+            return authors + 
+                ". <b>" + title + "</b>. " + 
+                "Dissertação (Dissertação de Mestrado) - " + school + ", " + 
+                year + ". ";
+        } else {
+            return 'Format ' + data.entryType + ' not supported yet for ' + formatValue + '!'
+        }
+    }
     // PHD THESIS
     // A Ph.D. thesis.
     // Required fields: author, title, school, year.
@@ -491,7 +509,6 @@ function format(data) {
         else if (formatValue == 'abnt') {
             return authors + 
                 ". <b>" + title + "</b>. " + 
-                year + ". " + 
                 "Tese (Tese de Doutorado) - " + school + ", " + 
                 year + ". ";
         }
